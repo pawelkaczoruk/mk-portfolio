@@ -1,7 +1,7 @@
 <template>
   <div class="design">
 
-    <!-- Design secion -->
+    <!-- Design view -->
     <div>
       <v-row >
         <!-- image description -->

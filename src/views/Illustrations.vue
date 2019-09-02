@@ -1,7 +1,7 @@
 <template>
   <div class="illustrations">
 
-    <!-- Ilustracje secion -->
+    <!-- Ilustracje view -->
     <div>
       <v-row>
         <!-- image description -->

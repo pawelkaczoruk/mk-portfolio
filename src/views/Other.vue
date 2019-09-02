@@ -1,8 +1,8 @@
 <template>
   <div class="other">
 
-    <!-- Inne secion -->
-    <div class="inne">
+    <!-- Inne view -->
+    <div>
       <v-row >
         <!-- image description -->
         <v-col sm="7" class="cyan content">
