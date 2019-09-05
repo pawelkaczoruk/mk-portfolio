@@ -29,7 +29,7 @@
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
           <div v-for="(item, i) in ilustracje" :key="i">
-            <v-card class="display-card my-4 mx-2" height="320px" width="230px">
+            <v-card elevation="3" tile class="display-card my-4 mx-2" height="320px" width="230px">
               <v-img class="display-img" :src="item.source">
                 <v-card-title class="justify-space-between">
                   <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
@@ -47,7 +47,7 @@
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
           <div v-for="(item, i) in design" :key="i">
-            <v-card class="display-card my-4 mx-2" height="320px" width="230px">
+            <v-card elevation="3" tile class="display-card my-4 mx-2" height="320px" width="230px">
               <v-img class="display-img" :src="item.source">
                 <v-card-title class="justify-space-between">
                   <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
@@ -65,7 +65,7 @@
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
           <div v-for="(item, i) in inne" :key="i">
-            <v-card class="display-card my-4 mx-2" height="320px" width="230px">
+            <v-card elevation="3" tile class="display-card my-4 mx-2" height="320px" width="230px">
               <v-img class="display-img" :src="item.source">
                 <v-card-title class="justify-space-between">
                   <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
@@ -83,7 +83,7 @@
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
             <v-card class="display-card my-4 mx-2" height="320px" width="230px">
-              <v-img class="display-img" :src="about.source">
+              <v-img elevation="3" tile class="display-img" :src="about.source">
                 <v-card-title class="justify-space-between">
                   <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
                 </v-card-title>
@@ -97,7 +97,7 @@
     <v-content v-if="toggle.logo">
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
-            <v-card class="display-card my-4 mx-2" height="300px" width="300px">
+            <v-card elevation="3" tile class="display-card my-4 mx-2" height="300px" width="300px">
               <v-img class="display-img" :src="logo.source">
                 <v-card-title class="justify-space-between">
                   <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
@@ -137,49 +137,56 @@
           </v-card-actions>
           <v-card-text>
             <!-- form -->
-            <h2 class="text-center display-1">Dodaj nowy post</h2>
             <v-container class="form-content">
               <v-content>
                 <v-form ref="form">
                   <v-row>
                     <v-col sm="7">
-                      <v-row></v-row>
-                      <v-row></v-row>
-                      <v-row></v-row>
+                      <v-row>
+                        <h2 class="form-title mx-auto display-1">Dodaj nowy post</h2>
+                      </v-row>
+                      <v-row>
+                        <v-file-input
+                          class="form-file"
+                          label="Plik"
+                          ref="fileInput"
+                          type="file"
+                          filled
+                          :rules="inputFileRules"
+                          required
+                          @change="onFileSelected"></v-file-input>                        
+                      </v-row>
+                      <v-row>
+                        <v-select 
+                          prepend-icon="mdi-file-document-box-outline"
+                          filled
+                          class="form-select" 
+                          :items="categories" 
+                          label="Kategoria"
+                          v-model="post.category"
+                          :rules="inputRules"
+                          required></v-select>                        
+                      </v-row>
+                      <v-row>
+                        <v-text-field 
+                          class="form-title"
+                          prepend-icon="mdi-fountain-pen-tip"
+                          filled
+                          label="Tytuł"
+                          v-model="post.title"
+                          :rules="inputRules"
+                          required></v-text-field>                        
+                      </v-row>
                     </v-col>
-                    <v-col sm=5>
-
+                    <v-col sm="5">
+                      <div class=selected-img>
+                        <v-img 
+                          :src="post.imageUrl" 
+                          height="400px"
+                          width="300px"></v-img>
+                      </div>
                     </v-col>
                   </v-row>
-
-                  <div class=selected-img><v-img 
-                    :src="post.imageUrl" 
-                    width="100px"
-                    height="150px"></v-img></div>
-                  <v-file-input
-                    class="form-file"
-                    label="Plik"
-                    ref="fileInput"
-                    type="file"
-                    required
-                    @change="onFileSelected"></v-file-input>
-                  <v-select 
-                    prepend-icon="mdi-file-document-box-outline"
-                    filled
-                    class="form-select" 
-                    :items="categories" 
-                    label="Kategoria"
-                    v-model="post.category"
-                    :rules="inputRules"
-                    required></v-select>
-                  <v-text-field 
-                    class="form-title"
-                    prepend-icon="mdi-fountain-pen-tip"
-                    filled
-                    label="Tytuł"
-                    v-model="post.title"
-                    :rules="inputRules"
-                    required></v-text-field>
                   <v-textarea
                     class="form-textarea"
                     prepend-icon="mdi-subtitles-outline"
@@ -218,6 +225,9 @@ export default {
       },
       inputRules: [
         v => v.length >= 1 || 'Uzupełnij pole'
+      ],
+      inputFileRules: [
+        v => v.length == null || 'Uzupełnij pole'
       ],
       categories: ['Ilustracje', 'Design', 'Inne'],
       dialog: false,
@@ -297,25 +307,25 @@ export default {
 </script>
 
 <style>
+  .form-title {
+    margin-bottom: 30px;
+  }
   .selected-img {
-    border: 1px solid black;
-    display:flex;
+    border: 2px solid black;
+    background: rgb(219, 216, 216);
+    max-width: 300px;
+    margin: auto;
+    display: flex;
   }
   .form-submit {
-    text-align:right;
-  }
-  .form-textarea {
-    width: 100%;
-  }
-  .form-file, .form-select, .form-title {
-    width: 60%;
+    text-align: right;
   }
   .form-content {
-    padding-left:60px;
-    padding-right:60px;
+    padding-left: 60px;
+    padding-right: 60px;
   }
   .display-card {
-    display:inline-block;
+    display: inline-block;
   }
   .display-img {
     width: 100%;
@@ -331,7 +341,7 @@ export default {
   #section-nav {
     border-top: 2px solid rgb(12, 56, 12);
   }
-  p.title {
+  p.title, .form-title {
     text-align: center;
   }
   #login-alert {
