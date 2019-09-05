@@ -29,11 +29,28 @@
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
           <div v-for="(item, i) in ilustracje" :key="i">
-            <v-card elevation="3" tile class="display-card my-4 mx-2" height="320px" width="230px">
-              <v-img class="display-img" :src="item.source">
+            <v-card 
+              elevation="3" 
+              tile 
+              class="display-card my-4 mx-2" 
+              height="320px" 
+              width="230px">
+              <v-img class="display-img" :src="item.imageUrl">
                 <v-card-title class="justify-space-between">
-                  <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
-                  <v-btn x-small fab><v-icon>mdi-trash-can-outline</v-icon></v-btn>
+                  <v-btn depressed 
+                    class="edit-btn" 
+                    x-small 
+                    fab
+                    @click="onEdit(item)">
+                    <v-icon>mdi-pencil-outline</v-icon>
+                  </v-btn>
+                  <v-btn 
+                    depressed 
+                    class="remove-btn" 
+                    x-small 
+                    fab>
+                    <v-icon>mdi-trash-can-outline</v-icon>
+                  </v-btn>
                 </v-card-title>
               </v-img>
             </v-card>
@@ -47,11 +64,28 @@
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
           <div v-for="(item, i) in design" :key="i">
-            <v-card elevation="3" tile class="display-card my-4 mx-2" height="320px" width="230px">
-              <v-img class="display-img" :src="item.source">
+            <v-card 
+              elevation="3" 
+              tile 
+              class="display-card my-4 mx-2" 
+              height="320px" 
+              width="230px">
+              <v-img class="display-img" :src="item.imageUrl">
                 <v-card-title class="justify-space-between">
-                  <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
-                  <v-btn x-small fab><v-icon>mdi-trash-can-outline</v-icon></v-btn>
+                  <v-btn depressed 
+                    class="edit-btn" 
+                    x-small 
+                    fab
+                    @click="onEdit(item)">
+                    <v-icon>mdi-pencil-outline</v-icon>
+                  </v-btn>
+                  <v-btn 
+                    depressed 
+                    class="remove-btn" 
+                    x-small 
+                    fab>
+                    <v-icon>mdi-trash-can-outline</v-icon>
+                  </v-btn>
                 </v-card-title>
               </v-img>
             </v-card>
@@ -65,11 +99,28 @@
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
           <div v-for="(item, i) in inne" :key="i">
-            <v-card elevation="3" tile class="display-card my-4 mx-2" height="320px" width="230px">
-              <v-img class="display-img" :src="item.source">
+            <v-card 
+              elevation="3" 
+              tile 
+              class="display-card my-4 mx-2" 
+              height="320px" 
+              width="230px">
+              <v-img class="display-img" :src="item.imageUrl">
                 <v-card-title class="justify-space-between">
-                  <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
-                  <v-btn x-small fab><v-icon>mdi-trash-can-outline</v-icon></v-btn>
+                  <v-btn depressed 
+                    class="edit-btn" 
+                    x-small 
+                    fab
+                    @click="onEdit(item)">
+                    <v-icon>mdi-pencil-outline</v-icon>
+                  </v-btn>
+                  <v-btn 
+                    depressed 
+                    class="remove-btn" 
+                    x-small 
+                    fab>
+                    <v-icon>mdi-trash-can-outline</v-icon>
+                  </v-btn>
                 </v-card-title>
               </v-img>
             </v-card>
@@ -78,14 +129,29 @@
       </v-container>
     </v-content>
 
+
     <!-- about -->
     <v-content v-if="toggle.about">
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
-            <v-card class="display-card my-4 mx-2" height="320px" width="230px">
-              <v-img elevation="3" tile class="display-img" :src="about.source">
+            <v-card 
+              class="display-card my-4 mx-2" 
+              height="420px" 
+              width="302px">
+              <v-img 
+                elevation="3" 
+                tile 
+                class="display-img" 
+                :src="about.imageUrl">
                 <v-card-title class="justify-space-between">
-                  <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
+                  <v-btn
+                    depressed
+                    class="edit-btn" 
+                    x-small 
+                    fab
+                    @click="onAboutEdit(about)">
+                    <v-icon>mdi-pencil-outline</v-icon>
+                  </v-btn>
                 </v-card-title>
               </v-img>
             </v-card>
@@ -97,10 +163,24 @@
     <v-content v-if="toggle.logo">
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
-            <v-card elevation="3" tile class="display-card my-4 mx-2" height="300px" width="300px">
-              <v-img class="display-img" :src="logo.source">
+            <v-card 
+              elevation="3" 
+              tile 
+              class="display-card my-4 mx-2" 
+              height="150px" 
+              width="562px">
+              <v-img 
+                class="display-img" 
+                :src="logo.imageUrl">
                 <v-card-title class="justify-space-between">
-                  <v-btn x-small fab><v-icon>mdi-pencil-outline</v-icon></v-btn>
+                  <v-btn 
+                    class="edit-btn"
+                    depressed
+                    x-small 
+                    fab
+                    @click="onLogoEdit(logo)">
+                    <v-icon>mdi-pencil-outline</v-icon>
+                  </v-btn>
                 </v-card-title>
               </v-img>
             </v-card>
@@ -125,7 +205,7 @@
             color="indigo"><v-icon>mdi-plus</v-icon></v-btn> 
         </div>
       </template>
-      <div class="yellow">
+      <div>
         <v-card>
           <v-card-actions>
             <div class="flex-grow-1"></div>
@@ -133,7 +213,7 @@
               small
               fab
               text
-              @click="dialog = false"><v-icon>mdi-close</v-icon></v-btn>
+              @click="dialog = false; clear()"><v-icon>mdi-close</v-icon></v-btn>
           </v-card-actions>
           <v-card-text>
             <!-- form -->
@@ -191,6 +271,7 @@
                     class="form-textarea"
                     prepend-icon="mdi-subtitles-outline"
                     filled
+                    counter
                     label="Opis"
                     v-model="post.content"
                     :rules="inputRules"
@@ -208,6 +289,212 @@
         </v-card>
       </div>
     </v-dialog>
+
+    <!-- edit post -->
+    <v-dialog v-model="edit">
+      <div>
+        <v-card>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn
+              small
+              fab
+              text
+              @click="edit = false"><v-icon>mdi-close</v-icon></v-btn>
+          </v-card-actions>
+          <v-card-text>
+            <!-- form -->
+            <v-container class="form-content">
+              <v-content>
+                <v-form ref="form">
+                  <v-row>
+                    <v-col sm="7">
+                      <v-row>
+                        <h2 class="form-title mx-auto display-1">Edytuj post</h2>
+                      </v-row>
+                      <v-row>
+                        <v-text-field 
+                          class="form-title"
+                          prepend-icon="mdi-fountain-pen-tip"
+                          filled
+                          label="Tytuł"
+                          v-model="editPost.title"
+                          :rules="inputRules"
+                          required></v-text-field>                        
+                      </v-row>
+                      <v-row>
+                        <v-textarea
+                          class="form-textarea"
+                          prepend-icon="mdi-subtitles-outline"
+                          filled
+                          counter
+                          label="Opis"
+                          v-model="editPost.content"
+                          :rules="inputRules"
+                          required></v-textarea>                        
+                      </v-row>
+                    </v-col>
+                    <v-col sm="5">
+                      <div class=selected-img>
+                        <v-img 
+                          :src="editPost.imageUrl" 
+                          height="400px"
+                          width="300px"></v-img>
+                      </div>
+                    </v-col>
+                  </v-row>
+
+                  <div class="form-submit">
+                    <v-btn 
+                      depressed
+                      color="green lighten-2" 
+                      @click="submit()">Zapisz</v-btn>
+                  </div>        
+                </v-form>               
+              </v-content>             
+            </v-container>       
+          </v-card-text>
+        </v-card>
+      </div>
+    </v-dialog>
+
+    <!-- edit about section -->
+    <v-dialog v-model="editAboutDialog">
+      <div>
+        <v-card>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn
+              small
+              fab
+              text
+              @click="editAboutDialog = false"><v-icon>mdi-close</v-icon></v-btn>
+          </v-card-actions>
+          <v-card-text>
+            <!-- form -->
+            <v-container class="form-content">
+              <v-content>
+                <v-form ref="formAbout">
+                  <v-row>
+                    <v-col sm="7">
+                      <v-row>
+                        <h2 class="form-title mx-auto display-1">Edytuj informacje o sobie</h2>
+                      </v-row>
+                      <v-row>
+                        <v-file-input
+                          class="form-file"
+                          label="Plik"
+                          ref="fileInput"
+                          type="file"
+                          filled
+                          :rules="inputFileRules"
+                          required
+                          @change="onAboutEditFile"></v-file-input>                        
+                      </v-row>
+                      <v-row>
+                        <v-text-field 
+                          class="form-title"
+                          prepend-icon="mdi-fountain-pen-tip"
+                          filled
+                          label="Tytuł"
+                          v-model="editAbout.title"
+                          :rules="inputRules"
+                          required></v-text-field>                        
+                      </v-row>
+                      <v-row>
+                        <v-textarea
+                          class="form-textarea"
+                          prepend-icon="mdi-subtitles-outline"
+                          filled
+                          counter
+                          label="Opis"
+                          v-model="editAbout.content"
+                          :rules="inputRules"
+                          required></v-textarea>                        
+                      </v-row>
+                    </v-col>
+                    <v-col sm="5">
+                      <div class=selected-img>
+                        <v-img 
+                          :src="editAbout.imageUrl" 
+                          height="400px"
+                          width="300px"></v-img>
+                      </div>
+                    </v-col>
+                  </v-row>
+
+                  <div class="form-submit">
+                    <v-btn 
+                      depressed
+                      color="green lighten-2" 
+                      @click="submitEditAbout()">Zapisz</v-btn>
+                  </div>        
+                </v-form>               
+              </v-content>             
+            </v-container>       
+          </v-card-text>
+        </v-card>
+      </div>
+    </v-dialog>
+
+    <!-- edit logo -->
+    <v-dialog v-model="editLogoDialog">
+      <div>
+        <v-card>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn
+              small
+              fab
+              text
+              @click="editLogoDialog = false"><v-icon>mdi-close</v-icon></v-btn>
+          </v-card-actions>
+          <v-card-text>
+            <!-- form -->
+            <v-container class="form-content">
+              <v-content>
+                <v-form ref="formLogo">
+                  <v-row>
+                    <v-col sm="7">
+                      <v-row>
+                        <h2 class="form-title mx-auto display-1">Edytuj logo</h2>
+                      </v-row>
+                      <v-row>
+                        <v-file-input
+                          class="form-file"
+                          label="Plik"
+                          ref="fileInput"
+                          type="file"
+                          filled
+                          :rules="inputFileRules"
+                          required
+                          @change="onLogoEditFile"></v-file-input>                        
+                      </v-row>
+                    </v-col>
+                    <v-col sm="5">
+                      <div class=selected-img>
+                        <v-img 
+                          :src="editLogo.imageUrl" 
+                          height="80px"
+                          width="300px"></v-img>
+                      </div>
+                    </v-col>
+                  </v-row>
+
+                  <div class="form-submit">
+                    <v-btn 
+                      depressed
+                      color="green lighten-2" 
+                      @click="submitEditLogo()">Zapisz</v-btn>
+                  </div>        
+                </v-form>               
+              </v-content>             
+            </v-container>       
+          </v-card-text>
+        </v-card>
+      </div>
+    </v-dialog>
+
   </div>
 </template>
 
@@ -216,13 +503,29 @@ export default {
   data() {
     return {
       post: {
-        file: '',
         category: '',
         title: '',
         content: '',
         imageUrl: '',
         image: null
       },
+      editPost: {
+        category: '',
+        title: '',
+        content: '',
+        imageUrl: '',
+        image: null
+      },
+      editAbout: { 
+        title: '', 
+        content: '', 
+        imageUrl: '' ,
+        image: null
+      },
+      editLogo: { 
+        imageUrl: '',
+        image: null
+      },      
       inputRules: [
         v => v.length >= 1 || 'Uzupełnij pole'
       ],
@@ -231,6 +534,9 @@ export default {
       ],
       categories: ['Ilustracje', 'Design', 'Inne'],
       dialog: false,
+      edit: false,
+      editAboutDialog: false,
+      editLogoDialog: false,
       toggle: {
         ilustracje: true,
         design: false,
@@ -246,31 +552,38 @@ export default {
         { name: 'logo', path: 'logo' }
       ],
       ilustracje: [
-        { title: 'test title 1', content: 'test content', source: require('@/assets/fox.png') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/sparrow.jpg') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/fight.png') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/courage.png') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/luca.png') }
+        { category: 'ilustracje', val: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
+        { category: 'ilustracje', val: 2, title: 'test title 2', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'ilustracje', val: 3, title: 'test title 3', content: 'test content', imageUrl: require('@/assets/fight.png') },
+        { category: 'ilustracje', val: 4, title: 'test title 4', content: 'test content', imageUrl: require('@/assets/courage.png') },
+        { category: 'ilustracje', val: 5, title: 'test title 5', content: 'test content', imageUrl: require('@/assets/luca.png') }
       ],
       design: [
-        { title: 'test title 1', content: 'test content', source: require('@/assets/courage.png') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/sparrow.jpg') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/luca.png') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/fight.png') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/fox.png') }
+        { category: 'design', val: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
+        { category: 'design', val: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'design', val: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
+        { category: 'design', val: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') },
+        { category: 'design', val: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') }
       ],
       inne: [
-        { title: 'test title 1', content: 'test content', source: require('@/assets/sparrow.jpg') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/luca.png') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/courage.png') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/fox.png') },
-        { title: 'test title 1', content: 'test content', source: require('@/assets/fight.png') }
+        { category: 'inne', val: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'inne', val: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
+        { category: 'inne', val: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
+        { category: 'inne', val: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
+        { category: 'inne', val: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') }
       ],
-      about: { title: 'about me', content: 'test content', source: require('@/assets/me.jpg') },
-      logo: { title: 'logo', source: require('@/assets/me.jpg') }
+      about: { category: 'about', title: 'About me', content: 'test content', imageUrl: require('@/assets/me.jpg') },
+      logo: { category: 'logo', imageUrl: require('@/assets/logo.jpg') }
     }
   },
   methods: {
+    clear() {
+      this.post.category = '';
+      this.post.title = '';
+      this.post.content = '';
+      this.post.imageUrl = '';
+      this.post.image = null;
+    },
     show(section) {
       for(var key in this.toggle) {
         if(key === section) {
@@ -282,10 +595,39 @@ export default {
     },
     submit() {
       if(this.$refs.form.validate()) {
-        console.log(this.post.title, this.post.content, this.post.category);
         this.dialog = false;
       }
     },
+    submitEditLogo() {
+      if(this.$refs.formLogo.validate()) {
+        this.editLogoDialog = false;
+      }
+    },
+    submitEditAbout() {
+      if(this.$refs.formAbout.validate()) {
+        this.editAboutDialog = false;
+      }
+    },
+    onEdit(item) {
+      this.editPost.category = item.category;
+      this.editPost.title = item.title;
+      this.editPost.content = item.content;
+      this.editPost.imageUrl = item.imageUrl;
+      this.editPost.image = null;
+      this.edit = true;
+    },
+    onAboutEdit(item) {
+      this.editAbout.title = item.title;
+      this.editAbout.content = item.content;
+      this.editAbout.imageUrl = item.imageUrl;
+      this.editAbout.image = null;
+      this.editAboutDialog = true;
+    },
+    onLogoEdit(item) {
+      this.editLogo.imageUrl = item.imageUrl;
+      this.editLogo.image = null;
+      this.editLogoDialog = true;
+    },    
     onPickFile() {
       this.$refs.fileInput.click();
     },
@@ -301,12 +643,44 @@ export default {
       })
       fileReader.readAsDataURL(file);
       this.image = file;
+    },
+    onAboutEditFile(event) {
+      const file = event;
+      let fileName = file.name;
+      if(fileName.lastIndexOf('.') <= 0) {
+        return alert('Dodaj poprawny plik!')
+      }
+      const fileReader = new FileReader();
+      fileReader.addEventListener('load', () => {
+        this.editAbout.imageUrl = fileReader.result;
+      })
+      fileReader.readAsDataURL(file);
+      this.image = file;
+    },
+    onLogoEditFile(event) {
+      const file = event;
+      let fileName = file.name;
+      if(fileName.lastIndexOf('.') <= 0) {
+        return alert('Dodaj poprawny plik!')
+      }
+      const fileReader = new FileReader();
+      fileReader.addEventListener('load', () => {
+        this.editLogo.imageUrl = fileReader.result;
+      })
+      fileReader.readAsDataURL(file);
+      this.image = file;
     }
   }
 }
 </script>
 
 <style>
+  .edit-btn {
+    border: 2px solid rgba(14, 79, 165, 0.65);
+  }
+  .remove-btn {
+    border: 2px solid rgba(255, 2, 2, 0.65);
+  }
   .form-title {
     margin-bottom: 30px;
   }
