@@ -29,7 +29,7 @@
       <v-container>
         <div class="d-flex justify-space-around flex-wrap">
           <div v-for="(item, i) in ilustracje" :key="i">
-            <v-card 
+            <v-card
               elevation="3" 
               tile 
               class="display-card my-4 mx-2" 
@@ -48,7 +48,8 @@
                     depressed 
                     class="remove-btn" 
                     x-small 
-                    fab>
+                    fab
+                    @click="onDeleteIlustracje(i)">
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -83,7 +84,8 @@
                     depressed 
                     class="remove-btn" 
                     x-small 
-                    fab>
+                    fab
+                    @click="onDeleteDesign(i)">
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -118,7 +120,8 @@
                     depressed 
                     class="remove-btn" 
                     x-small 
-                    fab>
+                    fab
+                    @click="onDeleteInne(i)">
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -291,7 +294,10 @@
     </v-dialog>
 
     <!-- edit post -->
-    <v-dialog v-model="edit">
+    <v-dialog 
+      v-model="edit"
+      persistent
+      no-click-animation>
       <div>
         <v-card>
           <v-card-actions>
@@ -348,7 +354,7 @@
                     <v-btn 
                       depressed
                       color="green lighten-2" 
-                      @click="submit()">Zapisz</v-btn>
+                      @click="submitEdit()">Zapisz</v-btn>
                   </div>        
                 </v-form>               
               </v-content>             
@@ -359,7 +365,10 @@
     </v-dialog>
 
     <!-- edit about section -->
-    <v-dialog v-model="editAboutDialog">
+    <v-dialog 
+      persistent
+      no-click-animation
+      v-model="editAboutDialog">
       <div>
         <v-card>
           <v-card-actions>
@@ -387,7 +396,6 @@
                           ref="fileInput"
                           type="file"
                           filled
-                          :rules="inputFileRules"
                           required
                           @change="onAboutEditFile"></v-file-input>                        
                       </v-row>
@@ -438,7 +446,10 @@
     </v-dialog>
 
     <!-- edit logo -->
-    <v-dialog v-model="editLogoDialog">
+    <v-dialog 
+      persistent
+      no-click-animation
+      v-model="editLogoDialog">
       <div>
         <v-card>
           <v-card-actions>
@@ -466,7 +477,6 @@
                           ref="fileInput"
                           type="file"
                           filled
-                          :rules="inputFileRules"
                           required
                           @change="onLogoEditFile"></v-file-input>                        
                       </v-row>
@@ -510,6 +520,7 @@ export default {
         image: null
       },
       editPost: {
+        dataId: '',
         category: '',
         title: '',
         content: '',
@@ -517,12 +528,14 @@ export default {
         image: null
       },
       editAbout: { 
+        category: '',
         title: '', 
         content: '', 
         imageUrl: '' ,
         image: null
       },
       editLogo: { 
+        category: '',
         imageUrl: '',
         image: null
       },      
@@ -552,28 +565,34 @@ export default {
         { name: 'logo', path: 'logo' }
       ],
       ilustracje: [
-        { category: 'ilustracje', val: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
-        { category: 'ilustracje', val: 2, title: 'test title 2', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'ilustracje', val: 3, title: 'test title 3', content: 'test content', imageUrl: require('@/assets/fight.png') },
-        { category: 'ilustracje', val: 4, title: 'test title 4', content: 'test content', imageUrl: require('@/assets/courage.png') },
-        { category: 'ilustracje', val: 5, title: 'test title 5', content: 'test content', imageUrl: require('@/assets/luca.png') }
+        { category: 'ilustracje', dataId: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
+        { category: 'ilustracje', dataId: 2, title: 'test title 2', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'ilustracje', dataId: 3, title: 'test title 3', content: 'test content', imageUrl: require('@/assets/fight.png') },
+        { category: 'ilustracje', dataId: 4, title: 'test title 4', content: 'test content', imageUrl: require('@/assets/courage.png') },
+        { category: 'ilustracje', dataId: 5, title: 'test title 5', content: 'test content', imageUrl: require('@/assets/luca.png') }
       ],
       design: [
-        { category: 'design', val: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
-        { category: 'design', val: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'design', val: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
-        { category: 'design', val: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') },
-        { category: 'design', val: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') }
+        { category: 'design', dataId: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
+        { category: 'design', dataId: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'design', dataId: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
+        { category: 'design', dataId: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') },
+        { category: 'design', dataId: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') }
       ],
       inne: [
-        { category: 'inne', val: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'inne', val: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
-        { category: 'inne', val: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
-        { category: 'inne', val: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
-        { category: 'inne', val: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') }
+        { category: 'inne', dataId: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'inne', dataId: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
+        { category: 'inne', dataId: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
+        { category: 'inne', dataId: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
+        { category: 'inne', dataId: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') }
       ],
-      about: { category: 'about', title: 'About me', content: 'test content', imageUrl: require('@/assets/me.jpg') },
-      logo: { category: 'logo', imageUrl: require('@/assets/logo.jpg') }
+      about: { 
+        category: 'about', 
+        title: 'About me', 
+        content: 'test content', 
+        imageUrl: require('@/assets/me.jpg') },
+      logo: { 
+        category: 'logo', 
+        imageUrl: require('@/assets/logo.jpg') }
     }
   },
   methods: {
@@ -585,7 +604,7 @@ export default {
       this.post.image = null;
     },
     show(section) {
-      for(var key in this.toggle) {
+      for(let key in this.toggle) {
         if(key === section) {
           this.toggle[key] = true;
         } else {
@@ -598,18 +617,56 @@ export default {
         this.dialog = false;
       }
     },
+    submitEdit() {
+      if(this.$refs.form.validate()) {
+        if(this.editPost.category == 'ilustracje') {
+          this.ilustracje.forEach(element => {
+            if(element.dataId == this.editPost.dataId) {
+              element.title = this.editPost.title;
+              element.content = this.editPost.content;
+            }
+          });
+        }
+        if(this.editPost.category == 'design') {
+          this.design.forEach(element => {
+            if(element.dataId == this.editPost.dataId) {
+              element.title = this.editPost.title;
+              element.content = this.editPost.content;
+            }
+          });
+        }
+        if(this.editPost.category == 'inne') {
+          this.inne.forEach(element => {
+            if(element.dataId == this.editPost.dataId) {
+              element.title = this.editPost.title;
+              element.content = this.editPost.content;
+            }
+          });
+        }
+        this.edit = false;
+      }
+    },
     submitEditLogo() {
       if(this.$refs.formLogo.validate()) {
+        this.logo.imageUrl = this.editLogo.imageUrl;
+        this.logo.image = this.editLogo.image;
+
         this.editLogoDialog = false;
       }
     },
     submitEditAbout() {
       if(this.$refs.formAbout.validate()) {
+        this.about.title = this.editAbout.title;
+        this.about.content = this.editAbout.content;
+        this.about.imageUrl = this.editAbout.imageUrl;
+        this.about.image = this.editAbout.image;
+
         this.editAboutDialog = false;
       }
     },
     onEdit(item) {
       this.editPost.category = item.category;
+      this.editPost.dataId = item.dataId;
       this.editPost.title = item.title;
       this.editPost.content = item.content;
       this.editPost.imageUrl = item.imageUrl;
@@ -617,6 +674,7 @@ export default {
       this.edit = true;
     },
     onAboutEdit(item) {
+      this.editAbout.category = item.category;
       this.editAbout.title = item.title;
       this.editAbout.content = item.content;
       this.editAbout.imageUrl = item.imageUrl;
@@ -624,6 +682,7 @@ export default {
       this.editAboutDialog = true;
     },
     onLogoEdit(item) {
+      this.editLogo.category = item.category;
       this.editLogo.imageUrl = item.imageUrl;
       this.editLogo.image = null;
       this.editLogoDialog = true;
@@ -642,7 +701,7 @@ export default {
         this.post.imageUrl = fileReader.result;
       })
       fileReader.readAsDataURL(file);
-      this.image = file;
+      this.post.image = file;
     },
     onAboutEditFile(event) {
       const file = event;
@@ -655,7 +714,7 @@ export default {
         this.editAbout.imageUrl = fileReader.result;
       })
       fileReader.readAsDataURL(file);
-      this.image = file;
+      this.editAbout.image = file;
     },
     onLogoEditFile(event) {
       const file = event;
@@ -668,7 +727,16 @@ export default {
         this.editLogo.imageUrl = fileReader.result;
       })
       fileReader.readAsDataURL(file);
-      this.image = file;
+      this.editLogo.image = file;
+    },
+    onDeleteIlustracje(index) {
+      this.$delete(this.ilustracje, index);
+    },
+    onDeleteDesign(index) {
+      this.$delete(this.design, index);
+    },
+    onDeleteInne(index) {
+      this.$delete(this.inne, index);
     }
   }
 }
