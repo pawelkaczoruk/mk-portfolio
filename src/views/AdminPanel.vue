@@ -193,8 +193,7 @@
 
     <!-- add new post - dialog -->
     <v-dialog 
-      v-model="dialog" 
-      full-width 
+      v-model="dialog"  
       persistent 
       no-click-animation>
       <template v-slot:activator="{ on }">
