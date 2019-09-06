@@ -1,13 +1,13 @@
 <template>
-  <div class="about">
+  <div class="illustrations">
 
-    <!-- Contact view -->
+    <!-- Ilustracje view -->
     <div>
-      <v-row >
+      <v-row>
         <!-- image description -->
-        <v-col sm="6" class="cyan content">
+        <v-col sm="7" class="cyan content">
           <div>
-            <h2 class="display-2 text-center pt-3">About me</h2>
+            <h2 class="display-2 text-center pt-3">Numero Uno</h2>
             <div class="pa-10 body-1">
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, porro magnam. Maxime, aut? Aspernatur repellendus quis rerum voluptates magni, deserunt aliquid qui hic cum eum? Amet saepe distinctio autem tempora.</p>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, porro magnam. Maxime, aut? Aspernatur repellendus quis rerum voluptates magni, deserunt aliquid qui hic cum eum? Amet saepe distinctio autem tempora.</p>
@@ -26,7 +26,7 @@
           </div>
         </v-col>
         <!-- images -->
-        <v-col sm="6" class="pink">
+        <v-col sm="5" class="pink">
           <div class="py-2 px-3" >
             <v-img contain max-height="90vh" src="..\assets\luca.png"></v-img>
           </div>
@@ -36,3 +36,22 @@
 
   </div>
 </template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-btns {
+    font-weight: 600;
+    text-align:right;
+    bottom: 0;
+    margin-top: auto;
+  }
+</style>
