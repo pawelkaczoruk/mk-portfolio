@@ -140,10 +140,10 @@
             <v-card 
               class="display-card my-4 mx-2" 
               height="420px" 
-              width="302px">
+              width="302px"
+              tile>
               <v-img 
                 elevation="3" 
-                tile 
                 class="display-img" 
                 :src="about.imageUrl">
                 <v-card-title class="justify-space-between">
@@ -589,10 +589,12 @@ export default {
         category: 'about', 
         title: 'About me', 
         content: 'test content', 
-        imageUrl: require('@/assets/me.jpg') },
+        imageUrl: require('@/assets/me.jpg') 
+      },
       logo: { 
         category: 'logo', 
-        imageUrl: require('@/assets/logo.jpg') }
+        imageUrl: require('@/assets/logo.jpg') 
+      }
     }
   },
   methods: {
