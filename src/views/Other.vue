@@ -49,11 +49,11 @@ export default {
   data() {
     return {
       inne: [
-        { category: 'inne', dataId: 1, title: 'test title 1', content: 'test content1', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'inne', dataId: 2, title: 'test title 2', content: 'test content2', imageUrl: require('@/assets/luca.png') },
-        { category: 'inne', dataId: 3, title: 'test title 3', content: 'test content3', imageUrl: require('@/assets/courage.png') },
-        { category: 'inne', dataId: 4, title: 'test title 4', content: 'test content4', imageUrl: require('@/assets/fox.png') },
-        { category: 'inne', dataId: 5, title: 'test title 5', content: 'test content5', imageUrl: require('@/assets/fight.png') }
+        { category: 'inne', dataId: 1, order: 1, title: 'test title 1', content: 'test content1', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'inne', dataId: 2, order: 2, title: 'test title 2', content: 'test content2', imageUrl: require('@/assets/luca.png') },
+        { category: 'inne', dataId: 3, order: 3, title: 'test title 3', content: 'test content3', imageUrl: require('@/assets/courage.png') },
+        { category: 'inne', dataId: 4, order: 4, title: 'test title 4', content: 'test content4', imageUrl: require('@/assets/fox.png') },
+        { category: 'inne', dataId: 5, order: 5, title: 'test title 5', content: 'test content5', imageUrl: require('@/assets/fight.png') }
       ],
       counter: 0
     }

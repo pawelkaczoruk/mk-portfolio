@@ -201,7 +201,7 @@
         <div id="add-btn">
           <v-btn
             v-on="on" 
-            @click="dialog != dialog" 
+            @click="dialog != dialog; clear()" 
             fab 
             dark 
             color="indigo"><v-icon>mdi-plus</v-icon></v-btn> 
@@ -249,6 +249,17 @@
                           :rules="inputRules"
                           required></v-select>                        
                       </v-row>
+                      <v-row>
+                        <v-text-field 
+                          type="number"
+                          class="form-order"
+                          prepend-icon="mdi-reorder-vertical"
+                          filled
+                          label="Kolejność wyświetlania na stronie"
+                          v-model="post.order"
+                          :rules="inputOrderRules"
+                          required></v-text-field>                      
+                      </v-row>  
                       <v-row>
                         <v-text-field 
                           class="form-title"
@@ -327,6 +338,17 @@
                           :rules="inputRules"
                           required></v-text-field>                        
                       </v-row>
+                      <v-row>
+                        <v-text-field 
+                          type="number"
+                          class="form-order"
+                          prepend-icon="mdi-reorder-vertical"
+                          filled
+                          label="Kolejność wyświetlania na stronie"
+                          v-model="editPost.order"
+                          :rules="inputOrderRules"
+                          required></v-text-field>                      
+                      </v-row>                      
                       <v-row>
                         <v-textarea
                           class="form-textarea"
@@ -512,6 +534,7 @@ export default {
   data() {
     return {
       post: {
+        order: 0,
         category: '',
         title: '',
         content: '',
@@ -519,6 +542,7 @@ export default {
         image: null
       },
       editPost: {
+        order: 0,
         dataId: '',
         category: '',
         title: '',
@@ -540,6 +564,9 @@ export default {
       },      
       inputRules: [
         v => v.length >= 1 || 'Uzupełnij pole'
+      ],
+      inputOrderRules: [
+        v => (v > 0) || 'Uzupełnij pole liczbą'
       ],
       inputFileRules: [
         v => v.length == null || 'Uzupełnij pole'
@@ -564,25 +591,25 @@ export default {
         { name: 'logo', path: 'logo' }
       ],
       ilustracje: [
-        { category: 'ilustracje', dataId: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
-        { category: 'ilustracje', dataId: 2, title: 'test title 2', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'ilustracje', dataId: 3, title: 'test title 3', content: 'test content', imageUrl: require('@/assets/fight.png') },
-        { category: 'ilustracje', dataId: 4, title: 'test title 4', content: 'test content', imageUrl: require('@/assets/courage.png') },
-        { category: 'ilustracje', dataId: 5, title: 'test title 5', content: 'test content', imageUrl: require('@/assets/luca.png') }
+        { category: 'ilustracje', dataId: 1, order: 1, title: 'test title 1', content: 'test content 1', imageUrl: require('@/assets/fox.png') },
+        { category: 'ilustracje', dataId: 2, order: 2, title: 'test title 2', content: 'test content 2', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'ilustracje', dataId: 3, order: 3, title: 'test title 3', content: 'test content 3', imageUrl: require('@/assets/fight.png') },
+        { category: 'ilustracje', dataId: 4, order: 4, title: 'test title 4', content: 'test content 4', imageUrl: require('@/assets/courage.png') },
+        { category: 'ilustracje', dataId: 5, order: 5, title: 'test title 5', content: 'test content 5', imageUrl: require('@/assets/luca.png') }
       ],
       design: [
-        { category: 'design', dataId: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
-        { category: 'design', dataId: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'design', dataId: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
-        { category: 'design', dataId: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') },
-        { category: 'design', dataId: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') }
+        { category: 'design', dataId: 1, order: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
+        { category: 'design', dataId: 2, order: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'design', dataId: 3, order: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
+        { category: 'design', dataId: 4, order: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') },
+        { category: 'design', dataId: 5, order: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') }
       ],
       inne: [
-        { category: 'inne', dataId: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'inne', dataId: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
-        { category: 'inne', dataId: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
-        { category: 'inne', dataId: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
-        { category: 'inne', dataId: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') }
+        { category: 'inne', dataId: 1, order: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'inne', dataId: 2, order: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
+        { category: 'inne', dataId: 3, order: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
+        { category: 'inne', dataId: 4, order: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
+        { category: 'inne', dataId: 5, order: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') }
       ],
       about: { 
         category: 'about', 
@@ -593,11 +620,13 @@ export default {
       logo: { 
         category: 'logo', 
         imageUrl: require('@/assets/logo.jpg') 
-      }
+      },
+      order: 0
     }
   },
   methods: {
     clear() {
+      this.post.order = null;
       this.post.category = '';
       this.post.title = '';
       this.post.content = '';
@@ -620,25 +649,71 @@ export default {
     },
     submitEdit() {
       if(this.$refs.form.validate()) {
+
         if(this.editPost.category == 'ilustracje') {
+          if(this.editPost.order != this.order) {
+            const diff = this.editPost.order - this.order;
+            this.ilustracje.forEach(el => {
+              if(diff > 0) {
+                if(this.order + diff >= el.order && el.order > this.order) {
+                  el.order -= 1;
+                }
+              } else if(diff < 0) {
+                if(this.order + diff <= el.order && el.order < this.order) {
+                  el.order += 1;
+                }
+              }
+            });   
+          }
           this.ilustracje.forEach(element => {
             if(element.dataId == this.editPost.dataId) {
+              element.order = parseInt(this.editPost.order);
               element.title = this.editPost.title;
               element.content = this.editPost.content;
             }
           });
         }
         if(this.editPost.category == 'design') {
+          if(this.editPost.order != this.order) {
+            const diff = this.editPost.order - this.order;
+            this.design.forEach(el => {
+              if(diff > 0) {
+                if(this.order + diff >= el.order && el.order > this.order) {
+                  el.order -= 1;
+                }
+              } else if(diff < 0) {
+                if(this.order + diff <= el.order && el.order < this.order) {
+                  el.order += 1;
+                }
+              }
+            });   
+          }
           this.design.forEach(element => {
             if(element.dataId == this.editPost.dataId) {
+              element.order = this.editPost.order;
               element.title = this.editPost.title;
               element.content = this.editPost.content;
             }
           });
         }
         if(this.editPost.category == 'inne') {
+          if(this.editPost.order != this.order) {
+            const diff = this.editPost.order - this.order;
+            this.inne.forEach(el => {
+              if(diff > 0) {
+                if(this.order + diff >= el.order && el.order > this.order) {
+                  el.order -= 1;
+                }
+              } else if(diff < 0) {
+                if(this.order + diff <= el.order && el.order < this.order) {
+                  el.order += 1;
+                }
+              }
+            });   
+          }
           this.inne.forEach(element => {
             if(element.dataId == this.editPost.dataId) {
+              element.order = this.editPost.order;
               element.title = this.editPost.title;
               element.content = this.editPost.content;
             }
@@ -666,6 +741,8 @@ export default {
       }
     },
     onEdit(item) {
+      this.order = item.order;
+      this.editPost.order = item.order;
       this.editPost.category = item.category;
       this.editPost.dataId = item.dataId;
       this.editPost.title = item.title;

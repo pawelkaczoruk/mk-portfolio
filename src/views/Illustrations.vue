@@ -31,7 +31,7 @@
         </v-col>
         <!-- images -->
         <v-col sm="5" class="pink">
-          <div class="py-2 px-3" >
+          <div class="py-2 px-3">
             <v-img 
               contain 
               max-height="85vh" 
@@ -49,11 +49,11 @@ export default {
   data() {
     return {
       ilustracje: [
-        { category: 'ilustracje', dataId: 1, title: 'test title 1', content: 'test content 1', imageUrl: require('@/assets/fox.png') },
-        { category: 'ilustracje', dataId: 2, title: 'test title 2', content: 'test content 2', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'ilustracje', dataId: 3, title: 'test title 3', content: 'test content 3', imageUrl: require('@/assets/fight.png') },
-        { category: 'ilustracje', dataId: 4, title: 'test title 4', content: 'test content 4', imageUrl: require('@/assets/courage.png') },
-        { category: 'ilustracje', dataId: 5, title: 'test title 5', content: 'test content 5', imageUrl: require('@/assets/luca.png') }
+        { category: 'ilustracje', dataId: 1, order: 1, title: 'test title 1', content: 'test content 1', imageUrl: require('@/assets/fox.png') },
+        { category: 'ilustracje', dataId: 2, order: 2, title: 'test title 2', content: 'test content 2', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'ilustracje', dataId: 3, order: 3, title: 'test title 3', content: 'test content 3', imageUrl: require('@/assets/fight.png') },
+        { category: 'ilustracje', dataId: 4, order: 4, title: 'test title 4', content: 'test content 4', imageUrl: require('@/assets/courage.png') },
+        { category: 'ilustracje', dataId: 5, order: 5, title: 'test title 5', content: 'test content 5', imageUrl: require('@/assets/luca.png') }
       ],
       counter: 0
     }
