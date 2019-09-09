@@ -32,6 +32,7 @@
 
       <v-navigation-drawer 
         absolute
+        disable-resize-watcher
         class="text-uppercase" 
         v-model="drawer"
         app>

@@ -4,53 +4,29 @@
     <!-- navigation cards -->
     <div>
       <v-container>
-      <v-row class="justify-space-around">
-   
-        <v-col sm="4" md="3">
-          <v-card max-width="70vw" href="/illustrations">
+      <v-row class="justify-space-around">  
+        <v-col 
+          v-for="(item, i) in navIcons" 
+          :key="i" 
+          sm="4" 
+          md="3">
+          <v-card 
+            class="nav-card" 
+            min-width="170px" 
+            max-width="70vw" 
+            :href="item.destination">
             <v-img
               aspect-ratio="0.8"
-              src="..\assets\luca.png"
+              :src="item.imageUrl"
             >
               <v-card-title
                 class="align-end fill-height text-uppercase"
               >
-                <span class="mx-auto font-weight-medium title text-center">Ilustracje</span>
+                <span class="mx-auto font-weight-medium title text-center">{{ item.title }}</span>
               </v-card-title>
             </v-img>
           </v-card>
         </v-col>
-
-        <v-col sm="4" md="3">
-          <v-card max-width="70vw" href="/design">
-            <v-img
-              aspect-ratio="0.8"
-              src="..\assets\sparrow.jpg"
-            >
-              <v-card-title 
-                class="align-end fill-height text-uppercase"
-              >
-                <span class="mx-auto font-weight-medium title text-center">Design</span>
-              </v-card-title>
-            </v-img>
-          </v-card>
-        </v-col>
-
-        <v-col sm="4" md="3">
-          <v-card max-width="70vw" href="/other">
-            <v-img
-              aspect-ratio="0.8"
-              src="..\assets\fox.png"
-            >
-              <v-card-title
-                class="align-end fill-height text-uppercase"
-              >
-                <span class="mx-auto font-weight-medium title text-center">Inne</span>
-              </v-card-title>
-            </v-img>
-          </v-card>
-        </v-col>
-
       </v-row>
       </v-container>
     </div>
@@ -63,12 +39,23 @@
 export default {
   data() {
     return {
-
+      navIcons: [
+        { destination: '/illustrations', title: 'ilustracje', imageUrl: require('@/assets/luca.png')},
+        { destination: '/design', title: 'design', imageUrl: require('@/assets/sparrow.jpg')},
+        { destination: '/other', title: 'inne', imageUrl: require('@/assets/fox.png')}
+      ]
     }
   }
 }
 </script>
-<style scoped>
+<style>
+  @media only screen and (max-width: 600px) {
+    .nav-card {
+      width: 100vw;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
   .title {
     color: rgb(197, 28, 160);
     width: 100%;

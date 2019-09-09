@@ -7,20 +7,24 @@
         <!-- image description -->
         <v-col sm="7" class="cyan content">
           <div>
-            <h2 class="display-2 text-center pt-3">Numero Secundo</h2>
+            <h2 class="display-2 text-center pt-3">{{ design[counter].title }}</h2>
             <div class="pa-10 body-1">
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, porro magnam. Maxime, aut? Aspernatur repellendus quis rerum voluptates magni, deserunt aliquid qui hic cum eum? Amet saepe distinctio autem tempora.</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, porro magnam. Maxime, aut? Aspernatur repellendus quis rerum voluptates magni, deserunt aliquid qui hic cum eum? Amet saepe distinctio autem tempora.</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, porro magnam. Maxime, aut? Aspernatur repellendus quis rerum voluptates magni, deserunt aliquid qui hic cum eum? Amet saepe distinctio autem tempora.</p>
+              <p>{{ design[counter].content }}</p>
             </div>
           </div>
           <!-- navigation buttons -->
           <div class="nav-btns">
-            <v-btn fab icon>
+            <v-btn 
+              fab 
+              icon 
+              @click="onPrevious()">
               <v-icon large>mdi-menu-left-outline</v-icon>
             </v-btn>
-            <span>1 / 8</span>
-            <v-btn fab icon>
+            <span>{{ counter + 1 }} / {{ design.length }}</span>
+            <v-btn 
+              fab 
+              icon 
+              @click="onNext()">
               <v-icon large>mdi-menu-right-outline</v-icon>
             </v-btn>
           </div>
@@ -28,7 +32,10 @@
         <!-- images -->
         <v-col sm="5" class="pink">
           <div class="py-2 px-3" >
-            <v-img contain max-height="90vh" src="..\assets\sparrow.jpg"></v-img>
+            <v-img 
+              contain 
+              max-height="85vh" 
+              :src="design[counter].imageUrl"></v-img>
           </div>
         </v-col>
       </v-row>
@@ -39,7 +46,30 @@
 
 <script>
 export default {
-
+  data() {
+    return {
+      design: [
+        { category: 'design', dataId: 1, title: 'test title 1', content: 'test content 1', imageUrl: require('@/assets/courage.png') },
+        { category: 'design', dataId: 2, title: 'test title 2', content: 'test content 2', imageUrl: require('@/assets/sparrow.jpg') },
+        { category: 'design', dataId: 3, title: 'test title 3', content: 'test content 3', imageUrl: require('@/assets/luca.png') },
+        { category: 'design', dataId: 4, title: 'test title 4', content: 'test content 4', imageUrl: require('@/assets/fight.png') },
+        { category: 'design', dataId: 5, title: 'test title 5', content: 'test content 5', imageUrl: require('@/assets/fox.png') }
+      ],
+      counter: 0
+    }
+  },
+  methods: {
+    onNext() {
+      if(this.counter + 1 < this.design.length) {
+        this.counter += 1;      
+      }
+    },
+    onPrevious() {
+      if(this.counter > 0) {
+        this.counter -= 1;
+      }
+    }
+  }
 }
 </script>
 
