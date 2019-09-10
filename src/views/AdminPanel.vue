@@ -247,6 +247,7 @@
                           label="Kategoria"
                           v-model="post.category"
                           :rules="inputRules"
+                          @change="onSelectCategory()"
                           required></v-select>                        
                       </v-row>
                       <v-row>
@@ -257,6 +258,7 @@
                           filled
                           label="Kolejność wyświetlania na stronie"
                           v-model="post.order"
+                          disabled
                           :rules="inputOrderRules"
                           required></v-text-field>                      
                       </v-row>  
@@ -292,7 +294,8 @@
                   <div class="form-submit">
                     <v-btn 
                       depressed
-                      color="green lighten-2" 
+                      color="green lighten-2"
+                      :loading="loading"
                       @click="submit()">Zapisz</v-btn>
                   </div>        
                 </v-form>               
@@ -530,9 +533,12 @@
 </template>
 
 <script>
+import db from '@/fb'
+
 export default {
   data() {
     return {
+      loading: false,
       post: {
         order: 0,
         category: '',
@@ -590,27 +596,9 @@ export default {
         { name: 'o mnie', path: 'about' },
         { name: 'logo', path: 'logo' }
       ],
-      ilustracje: [
-        { category: 'ilustracje', dataId: 1, order: 1, title: 'test title 1', content: 'test content 1', imageUrl: require('@/assets/fox.png') },
-        { category: 'ilustracje', dataId: 2, order: 2, title: 'test title 2', content: 'test content 2', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'ilustracje', dataId: 3, order: 3, title: 'test title 3', content: 'test content 3', imageUrl: require('@/assets/fight.png') },
-        { category: 'ilustracje', dataId: 4, order: 4, title: 'test title 4', content: 'test content 4', imageUrl: require('@/assets/courage.png') },
-        { category: 'ilustracje', dataId: 5, order: 5, title: 'test title 5', content: 'test content 5', imageUrl: require('@/assets/luca.png') }
-      ],
-      design: [
-        { category: 'design', dataId: 1, order: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
-        { category: 'design', dataId: 2, order: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'design', dataId: 3, order: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
-        { category: 'design', dataId: 4, order: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') },
-        { category: 'design', dataId: 5, order: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') }
-      ],
-      inne: [
-        { category: 'inne', dataId: 1, order: 1, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'inne', dataId: 2, order: 2, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/luca.png') },
-        { category: 'inne', dataId: 3, order: 3, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/courage.png') },
-        { category: 'inne', dataId: 4, order: 4, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fox.png') },
-        { category: 'inne', dataId: 5, order: 5, title: 'test title 1', content: 'test content', imageUrl: require('@/assets/fight.png') }
-      ],
+      ilustracje: [],
+      design: [],
+      inne: [],
       about: { 
         category: 'about', 
         title: 'About me', 
@@ -644,7 +632,19 @@ export default {
     },
     submit() {
       if(this.$refs.form.validate()) {
-        this.dialog = false;
+        this.loading = true;
+        const project = {
+          order: this.post.order,
+          title: this.post.title,
+          category: this.post.category.toLowerCase(),
+          content: this.post.content
+        }
+        db.collection('projekty').add(project).then(() => {
+          this.dialog = false;
+          this.loading = false;
+        }).catch(() => {       
+          return alert('Coś poszło nie tak');
+        });
       }
     },
     submitEdit() {
@@ -815,12 +815,61 @@ export default {
     },
     onDeleteInne(index) {
       this.$delete(this.inne, index);
+    },
+    onSelectCategory() {
+      if(this.post.category.toLowerCase() == 'ilustracje'){
+        this.post.order = this.ilustracje.length + 1;
+      }
+      if(this.post.category.toLowerCase() == 'design'){
+        this.post.order = this.design.length + 1;
+      }
+      if(this.post.category.toLowerCase() == 'inne'){
+        this.post.order = this.inne.length + 1;
+      }
     }
+  },
+  created() {
+    db.collection('projekty').onSnapshot(response => {
+      const changes = response.docChanges();
+      changes.forEach(change => {
+        if(change.type === 'added'){
+          if(change.doc.data().category == 'ilustracje') {
+            this.ilustracje.push({
+              ...change.doc.data(),
+              dataId: change.doc.id,
+              imageUrl: require('@/assets/luca.png')
+            });          
+          }
+          if(change.doc.data().category == 'design') {
+            this.design.push({
+              ...change.doc.data(),
+              dataId: change.doc.id,
+              imageUrl: require('@/assets/luca.png')
+            });          
+          }
+          if(change.doc.data().category == 'inne') {
+            this.inne.push({
+              ...change.doc.data(),
+              dataId: change.doc.id,
+              imageUrl: require('@/assets/luca.png')
+            });          
+          }
+        }
+      });
+    });
   }
 }
 </script>
 
 <style>
+  .v-card__text {
+    padding-top: 0;
+    margin-top: -41px;
+  }
+  .v-card__actions {
+    padding-bottom: 0;
+    padding-top: 0;
+  }
   .edit-btn {
     border: 2px solid rgba(14, 79, 165, 0.65);
   }

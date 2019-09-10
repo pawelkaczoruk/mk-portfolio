@@ -2,7 +2,7 @@
   <div class="other">
 
     <!-- Inne view -->
-    <div>
+    <div v-if="inne.length > 0">
       <v-row >
         <!-- image description -->
         <v-col sm="7" class="cyan content">
@@ -17,14 +17,16 @@
             <v-btn 
               fab 
               icon 
-              @click="onPrevious()">
+              @click="counter--"
+              :disabled="counter == 0">
               <v-icon large>mdi-menu-left-outline</v-icon>
             </v-btn>
             <span>{{ counter + 1 }} / {{ inne.length }}</span>
             <v-btn 
               fab 
               icon 
-              @click="onNext()">
+              @click="counter++"
+              :disabled="counter + 1 >= inne.length">
               <v-icon large>mdi-menu-right-outline</v-icon>
             </v-btn>
           </div>
@@ -45,30 +47,31 @@
 </template>
 
 <script>
+import db from '@/fb'
+
 export default {
   data() {
     return {
-      inne: [
-        { category: 'inne', dataId: 1, order: 1, title: 'test title 1', content: 'test content1', imageUrl: require('@/assets/sparrow.jpg') },
-        { category: 'inne', dataId: 2, order: 2, title: 'test title 2', content: 'test content2', imageUrl: require('@/assets/luca.png') },
-        { category: 'inne', dataId: 3, order: 3, title: 'test title 3', content: 'test content3', imageUrl: require('@/assets/courage.png') },
-        { category: 'inne', dataId: 4, order: 4, title: 'test title 4', content: 'test content4', imageUrl: require('@/assets/fox.png') },
-        { category: 'inne', dataId: 5, order: 5, title: 'test title 5', content: 'test content5', imageUrl: require('@/assets/fight.png') }
-      ],
+      inne: [],
       counter: 0
     }
   },
-  methods: {
-    onNext() {
-      if(this.counter + 1 < this.inne.length) {
-        this.counter += 1;      
-      }
-    },
-    onPrevious() {
-      if(this.counter > 0) {
-        this.counter -= 1;
-      }
-    }
+  created() {
+    db.collection('projekty').onSnapshot(response => {
+      const changes = response.docChanges();
+      changes.forEach(change => {
+        if(change.type === 'added'){
+          if(change.doc.data().category == 'inne') {
+            this.inne.push({
+              ...change.doc.data(),
+              dataId: change.doc.id,
+              imageUrl: require('@/assets/luca.png')
+            });          
+          } 
+        }
+        this.inne.sort((a, b) => (a.order > b.order) ? 1 : ((a.order < b.order) ? -1 : 0));
+      });
+    });
   }
 }
 </script>
