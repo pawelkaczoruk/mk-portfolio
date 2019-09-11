@@ -58,8 +58,10 @@ export default {
 
     }
   },
+
   created() {
-    db.collection('projekty').onSnapshot(response => {
+    // Loading projects from db  
+    db.collection('projekty').orderBy('order').onSnapshot(response => {
       const changes = response.docChanges();
       changes.forEach(change => {
         if(change.type === 'added'){
@@ -71,7 +73,6 @@ export default {
             });          
           } 
         }
-        this.ilustracje.sort((a, b) => (a.order > b.order) ? 1 : ((a.order < b.order) ? -1 : 0));
       });
     });
   }

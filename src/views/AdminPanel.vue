@@ -49,7 +49,8 @@
                     class="remove-btn" 
                     x-small 
                     fab
-                    @click="onDeleteIlustracje(i)">
+                    :loading="whileProcessing"
+                    @click="onDelete(item.dataId, item.order, item.category)">
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -85,7 +86,8 @@
                     class="remove-btn" 
                     x-small 
                     fab
-                    @click="onDeleteDesign(i)">
+                    :loading="whileProcessing"
+                    @click="onDelete(item.dataId, item.order, item.category)">
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -121,7 +123,8 @@
                     class="remove-btn" 
                     x-small 
                     fab
-                    @click="onDeleteInne(i)">
+                    :loading="whileProcessing"
+                    @click="onDelete(item.dataId, item.order, item.category)">
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -378,6 +381,7 @@
                     <v-btn 
                       depressed
                       color="green lighten-2" 
+                      :loading="loadingEdit"
                       @click="submitEdit()">Zapisz</v-btn>
                   </div>        
                 </v-form>               
@@ -538,6 +542,8 @@ import db from '@/fb'
 export default {
   data() {
     return {
+      loadingEdit: false,
+      whileProcessing: false,
       loading: false,
       post: {
         order: 0,
@@ -648,19 +654,24 @@ export default {
       }
     },
     submitEdit() {
+      // validate
       if(this.$refs.form.validate()) {
-
+        // change order of all elements that should be updated
+        this.loadingEdit = true;
+        let changeOrder = [];
         if(this.editPost.category == 'ilustracje') {
           if(this.editPost.order != this.order) {
             const diff = this.editPost.order - this.order;
             this.ilustracje.forEach(el => {
               if(diff > 0) {
                 if(this.order + diff >= el.order && el.order > this.order) {
-                  el.order -= 1;
+                  el.order = parseInt(el.order - 1);
+                  changeOrder.push({ order: el.order, dataId: el.dataId });
                 }
               } else if(diff < 0) {
                 if(this.order + diff <= el.order && el.order < this.order) {
-                  el.order += 1;
+                  el.order = parseInt(el.order + 1);
+                  changeOrder.push({ order: el.order, dataId: el.dataId });
                 }
               }
             });   
@@ -679,18 +690,20 @@ export default {
             this.design.forEach(el => {
               if(diff > 0) {
                 if(this.order + diff >= el.order && el.order > this.order) {
-                  el.order -= 1;
+                  el.order = parseInt(el.order - 1);
+                  changeOrder.push({ order: el.order, dataId: el.dataId });
                 }
               } else if(diff < 0) {
                 if(this.order + diff <= el.order && el.order < this.order) {
-                  el.order += 1;
+                  el.order = parseInt(el.order + 1);
+                  changeOrder.push({ order: el.order, dataId: el.dataId });
                 }
               }
             });   
           }
           this.design.forEach(element => {
             if(element.dataId == this.editPost.dataId) {
-              element.order = this.editPost.order;
+              element.order = parseInt(this.editPost.order);
               element.title = this.editPost.title;
               element.content = this.editPost.content;
             }
@@ -702,24 +715,59 @@ export default {
             this.inne.forEach(el => {
               if(diff > 0) {
                 if(this.order + diff >= el.order && el.order > this.order) {
-                  el.order -= 1;
+                  el.order = parseInt(el.order - 1);
+                  changeOrder.push({ order: el.order, dataId: el.dataId });
                 }
               } else if(diff < 0) {
                 if(this.order + diff <= el.order && el.order < this.order) {
-                  el.order += 1;
+                  el.order = parseInt(el.order + 1);
+                  changeOrder.push({ order: el.order, dataId: el.dataId });
                 }
               }
             });   
           }
           this.inne.forEach(element => {
             if(element.dataId == this.editPost.dataId) {
-              element.order = this.editPost.order;
+              element.order = parseInt(this.editPost.order);
               element.title = this.editPost.title;
               element.content = this.editPost.content;
             }
           });
         }
-        this.edit = false;
+
+      const up = {
+        order: parseInt(this.editPost.order),
+        title: this.editPost.title,
+        content: this.editPost.content,
+        category: this.editPost.category
+      }
+
+      // update one post data on firebase
+      db.collection('projekty').doc(this.editPost.dataId).set(up).then(() => {
+        
+        // update all modified order properties on firebase
+        changeOrder.forEach(el => {
+          db.collection('projekty').doc(el.dataId).update({ 
+            order: el.order 
+          }).then(() => {
+            this.edit = false;
+            this.loadingEdit = false;
+          }).catch(() => {
+            return alert('Coś poszło nie tak - błąd aktualizacji zmiany kolejności');
+          });
+        });        
+        if(changeOrder.length == 0) {
+          this.loadingEdit = false;
+          this.edit = false;
+        }
+
+      }).catch(() => {
+        return alert('Coś poszło nie tak - błąd aktualizacji edycji projektu');
+      })
+
+
+
+
       }
     },
     submitEditLogo() {
@@ -741,7 +789,7 @@ export default {
       }
     },
     onEdit(item) {
-      this.order = item.order;
+      this.order = parseInt(item.order);
       this.editPost.order = item.order;
       this.editPost.category = item.category;
       this.editPost.dataId = item.dataId;
@@ -749,7 +797,7 @@ export default {
       this.editPost.content = item.content;
       this.editPost.imageUrl = item.imageUrl;
       this.editPost.image = null;
-      this.edit = true;
+      this.edit = true; 
     },
     onAboutEdit(item) {
       this.editAbout.category = item.category;
@@ -807,14 +855,61 @@ export default {
       fileReader.readAsDataURL(file);
       this.editLogo.image = file;
     },
-    onDeleteIlustracje(index) {
-      this.$delete(this.ilustracje, index);
-    },
-    onDeleteDesign(index) {
-      this.$delete(this.design, index);
-    },
-    onDeleteInne(index) {
-      this.$delete(this.inne, index);
+    onDelete(id, order, category) {
+
+      // remove item from db
+      const delOrder = order;
+      db.collection('projekty').doc(id).delete().then(() => {
+        
+        // update order property of remaining projects
+        let changeOrder = [];
+        if(category == 'ilustracje') {
+          if(delOrder != this.ilustracje.length +1) {
+            this.ilustracje.forEach(el => {
+              if(el.order > delOrder) {
+                el.order = parseInt(el.order - 1);
+                changeOrder.push({ order: el.order, dataId: el.dataId });
+              }
+            });   
+          }
+        } else if(category == 'design') {
+          if(delOrder != this.design.length + 1) {
+            this.design.forEach(el => {
+              if(el.order > delOrder) {
+                el.order = parseInt(el.order - 1);
+                changeOrder.push({ order: el.order, dataId: el.dataId });
+              }
+            });   
+          }
+        } else if(category == 'inne') {
+          if(delOrder != this.inne.length + 1) {
+            this.inne.forEach(el => {
+              if(el.order > delOrder) {
+                el.order = parseInt(el.order - 1);
+                changeOrder.push({ order: el.order, dataId: el.dataId });
+              }
+            });   
+          }
+        }
+
+        // disable remove delete button to prevent spam clicks
+        this.whileProcessing = true; 
+        // push changes to db
+        changeOrder.forEach(el => {
+          db.collection('projekty').doc(el.dataId).update({
+            order: el.order
+          }).then(() => {
+            this.whileProcessing = false;
+          }).catch(() => {
+            return alert('Coś poszło nie tak - błąd aktualizacji kolejności pozostałych projektów');
+          });
+        });
+        if(changeOrder.length == 0) {
+          this.whileProcessing = false;
+        }
+      }).catch(() => {
+        return alert('Coś poszło nie tak');
+      })
     },
     onSelectCategory() {
       if(this.post.category.toLowerCase() == 'ilustracje'){
@@ -829,7 +924,8 @@ export default {
     }
   },
   created() {
-    db.collection('projekty').onSnapshot(response => {
+    // getting items from db
+    db.collection('projekty').orderBy('order').onSnapshot(response => {
       const changes = response.docChanges();
       changes.forEach(change => {
         if(change.type === 'added'){
@@ -854,6 +950,28 @@ export default {
               imageUrl: require('@/assets/luca.png')
             });          
           }
+        } else if(change.type === 'removed') {
+          if(change.doc.data().category == 'ilustracje') {
+            this.ilustracje.forEach((item, index) => {
+              if(item.dataId == change.doc.id) {
+                this.ilustracje.splice(index, 1);
+              }
+            });
+          }
+          if(change.doc.data().category == 'design') {
+            this.design.forEach((item, index) => {
+              if(item.dataId == change.doc.id) {
+                this.design.splice(index, 1);
+              }
+            });
+          }
+          if(change.doc.data().category == 'inne') {
+            this.inne.forEach((item, index) => {
+              if(item.dataId == change.doc.id) {
+                this.inne.splice(index, 1);
+              }
+            });
+          }
         }
       });
     });
@@ -874,6 +992,7 @@ export default {
     border: 2px solid rgba(14, 79, 165, 0.65);
   }
   .remove-btn {
+    background: rgba(255, 2, 2, 0.65);
     border: 2px solid rgba(255, 2, 2, 0.65);
   }
   .form-title {
