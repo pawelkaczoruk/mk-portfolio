@@ -50,7 +50,7 @@
                     x-small 
                     fab
                     :loading="whileProcessing"
-                    @click="onDelete(item.dataId, item.order, item.category)">
+                    @click="onDelete(item.dataId, item.extension, item.order, item.category)">
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -87,7 +87,7 @@
                     x-small 
                     fab
                     :loading="whileProcessing"
-                    @click="onDelete(item.dataId, item.order, item.category)">
+                    @click="onDelete(item.dataId, item.extension, item.order, item.category)">
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -124,7 +124,7 @@
                     x-small 
                     fab
                     :loading="whileProcessing"
-                    @click="onDelete(item.dataId, item.order, item.category)">
+                    @click="onDelete(item.dataId, item.extension, item.order, item.category)">
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -218,6 +218,7 @@
               small
               fab
               text
+              :disabled="loading"
               @click="dialog = false; clear()"><v-icon>mdi-close</v-icon></v-btn>
           </v-card-actions>
           <v-card-text>
@@ -322,6 +323,7 @@
               small
               fab
               text
+              :disabled="loadingEdit"
               @click="edit = false"><v-icon>mdi-close</v-icon></v-btn>
           </v-card-actions>
           <v-card-text>
@@ -405,6 +407,7 @@
               small
               fab
               text
+              :disabled="loadingEdit"
               @click="editAboutDialog = false"><v-icon>mdi-close</v-icon></v-btn>
           </v-card-actions>
           <v-card-text>
@@ -463,6 +466,7 @@
                     <v-btn 
                       depressed
                       color="green lighten-2" 
+                      :loading="loadingEdit"
                       @click="submitEditAbout()">Zapisz</v-btn>
                   </div>        
                 </v-form>               
@@ -486,6 +490,7 @@
               small
               fab
               text
+              :disabled="loadingEdit"
               @click="editLogoDialog = false"><v-icon>mdi-close</v-icon></v-btn>
           </v-card-actions>
           <v-card-text>
@@ -523,6 +528,7 @@
                     <v-btn 
                       depressed
                       color="green lighten-2" 
+                      :loading="loadingEdit"
                       @click="submitEditLogo()">Zapisz</v-btn>
                   </div>        
                 </v-form>               
@@ -537,7 +543,7 @@
 </template>
 
 <script>
-import db from '@/fb'
+import { db, st } from '@/fb'
 
 export default {
   data() {
@@ -605,16 +611,8 @@ export default {
       ilustracje: [],
       design: [],
       inne: [],
-      about: { 
-        category: 'about', 
-        title: 'About me', 
-        content: 'test content', 
-        imageUrl: require('@/assets/me.jpg') 
-      },
-      logo: { 
-        category: 'logo', 
-        imageUrl: require('@/assets/logo.jpg') 
-      },
+      about: {},
+      logo: {},
       order: 0
     }
   },
@@ -638,19 +636,58 @@ export default {
     },
     submit() {
       if(this.$refs.form.validate()) {
+
+        const filename = this.post.image.name;       
+        const ext = filename.slice(filename.lastIndexOf('.'));
+        
+        // adding new post to db
         this.loading = true;
         const project = {
           order: this.post.order,
           title: this.post.title,
           category: this.post.category.toLowerCase(),
-          content: this.post.content
+          content: this.post.content,
+          extension: ext,
+          imageUrl: ''
         }
-        db.collection('projekty').add(project).then(() => {
+        db.collection('projekty').add(project).then((ref) => {
+          
+          // adding image to st
+          const stRef = st.ref();
+          const metadata = this.post.image.type;
+          const downloadURL = 'images/' + ref.id + ext;
+
+          stRef.child(downloadURL).put(this.post.image, { 
+            type: metadata
+          }).then(() => {
+
+            // get url of img and update it to db
+            st.ref().child(downloadURL).getDownloadURL().then((response) => {
+              db.collection('projekty').doc(ref.id).update({
+                imageUrl: response
+              }).then(() => {
+                this.dialog = false;
+                this.loading = false;            
+              }).catch(() => {
+                this.dialog = false;
+                this.loading = false; 
+                return alert('Coś poszło nie tak - błąd aktualizacji url');
+              });
+            });
+
+          }).catch(() => {
+            this.dialog = false;
+            this.loading = false;
+            return alert('Coś poszło nie tak - błąd wgrywania obrazu');
+          });
+
+        }).catch(() => {
           this.dialog = false;
-          this.loading = false;
-        }).catch(() => {       
-          return alert('Coś poszło nie tak');
+          this.loading = false;   
+          return alert('Coś poszło nie tak - błąd wysłania do bazy danych');
         });
+
+
       }
     },
     submitEdit() {
@@ -743,7 +780,7 @@ export default {
       }
 
       // update one post data on firebase
-      db.collection('projekty').doc(this.editPost.dataId).set(up).then(() => {
+      db.collection('projekty').doc(this.editPost.dataId).update(up).then(() => {
         
         // update all modified order properties on firebase
         changeOrder.forEach(el => {
@@ -752,8 +789,10 @@ export default {
           }).then(() => {
             this.edit = false;
             this.loadingEdit = false;
-          }).catch(() => {
-            return alert('Coś poszło nie tak - błąd aktualizacji zmiany kolejności');
+          }).catch((err) => {
+            this.edit = false;
+            this.loadingEdit = false;
+            return alert('Coś poszło nie tak - błąd aktualizacji zmiany kolejności. ' + err);
           });
         });        
         if(changeOrder.length == 0) {
@@ -761,8 +800,10 @@ export default {
           this.edit = false;
         }
 
-      }).catch(() => {
-        return alert('Coś poszło nie tak - błąd aktualizacji edycji projektu');
+      }).catch((err) => {
+        this.loadingEdit = false;
+        this.edit = false;
+        return alert('Coś poszło nie tak - błąd aktualizacji edycji projektu. ' + err);
       })
 
 
@@ -772,20 +813,139 @@ export default {
     },
     submitEditLogo() {
       if(this.$refs.formLogo.validate()) {
-        this.logo.imageUrl = this.editLogo.imageUrl;
-        this.logo.image = this.editLogo.image;
 
-        this.editLogoDialog = false;
+        this.loadingEdit = true;
+
+        const filename = this.editLogo.image.name;
+        const ext = filename.slice(filename.lastIndexOf('.'));
+        const oldImg= 'logo/' + this.logo.dataId + this.logo.extension;
+        const metadata = this.editLogo.image.type;
+
+
+        // remove old image from st
+        st.ref().child(oldImg).delete().then(() => {
+
+          // add new image to st
+          st.ref().child('logo/' + this.logo.dataId + ext).put(this.editLogo.image, {
+            type: metadata
+          }).then(() => {
+
+            // get new image url
+            st.ref().child('logo/' + this.logo.dataId + ext).getDownloadURL().then((res) => {
+
+              // update image url on database
+              db.collection('logo').doc(this.logo.dataId).update({
+                extension: ext,
+                imageUrl: res
+              }).then(() => {
+                this.loadingEdit = false;
+                this.editLogoDialog = false;
+              }).catch(() => {
+                this.loadingEdit = false;
+                this.editLogoDialog = false;
+                return alert('Coś poszło nie tak - błąd aktualizacji url w bazie');
+              });
+
+            }).catch(() => {
+              this.loadingEdit = false;
+              this.editLogoDialog = false;
+              return alert('Coś poszło nie tak - błąd wczytywania url nowego obrazu');
+            });
+
+          }).catch(() => {
+            this.loadingEdit = false;
+            this.editLogoDialog = false;
+            return alert('Coś poszło nie tak - błąd wgrywania nowego obrazu');
+          });
+
+        }).catch(() => {
+          this.loadingEdit = false;
+          this.editLogoDialog = false;
+          return alert('Coś poszło nie tak - błąd usuwania starego obrazu');
+        });
+
+        this.logo.imageUrl = this.editLogo.imageUrl;
+        this.logo.image = this.editLogo.image;  
       }
     },
     submitEditAbout() {
       if(this.$refs.formAbout.validate()) {
+
+        this.loadingEdit = true;
+
+        const newAbout = {
+          title: this.editAbout.title,
+          content: this.editAbout.content
+        }
+
+        // update data on db
+        db.collection('about').doc(this.about.dataId).update(newAbout).then(() => {
+
+          // if image was changed
+          if(this.editAbout.image != null) {
+
+            const oldImg= 'about/' + this.about.dataId + this.about.extension;
+            const metadata = this.editAbout.image.type;
+            const filename = this.editAbout.image.name;
+            const ext = filename.slice(filename.lastIndexOf('.'));
+
+            // remove old image from st
+            st.ref().child(oldImg).delete().then(() => {
+
+              // add new image to st
+              st.ref().child('about/' + this.about.dataId + ext).put(this.editAbout.image, {
+                type: metadata
+              }).then(() => {
+
+                // get new image url
+                st.ref().child('about/' + this.about.dataId + ext).getDownloadURL().then((res) => {
+
+                  // update image url on database
+                  db.collection('about').doc(this.about.dataId).update({
+                    extension: ext,
+                    imageUrl: res
+                  }).then(() => {
+                    this.loadingEdit = false;
+                    this.editAboutDialog = false;
+                  }).catch(() => {
+                    this.loadingEdit = false;
+                    this.editAboutDialog = false;
+                    return alert('Coś poszło nie tak - błąd aktualizacji url w bazie');
+                  });
+
+                }).catch(() => {
+                  this.loadingEdit = false;
+                  this.editAboutDialog = false;
+                  return alert('Coś poszło nie tak - błąd wczytywania url nowego obrazu');
+                });
+
+              }).catch(() => {
+                this.loadingEdit = false;
+                this.editAboutDialog = false;
+                return alert('Coś poszło nie tak - błąd wgrywania nowego obrazu');
+              });
+
+            }).catch(() => {
+              this.loadingEdit = false;
+              this.editAboutDialog = false;
+              return alert('Coś poszło nie tak - błąd usuwania starego obrazu');
+            });
+
+          } else {
+            this.loadingEdit = false;
+            this.editAboutDialog = false;
+          }
+
+        }).catch(() => {
+          this.loadingEdit = false;
+          this.editAboutDialog = false;
+          return alert('Coś poszło nie tak - błąd aktualizacji treści w bazie');
+        });
+  
         this.about.title = this.editAbout.title;
         this.about.content = this.editAbout.content;
         this.about.imageUrl = this.editAbout.imageUrl;
         this.about.image = this.editAbout.image;
-
-        this.editAboutDialog = false;
       }
     },
     onEdit(item) {
@@ -818,7 +978,7 @@ export default {
     },
     onFileSelected(event) {
       const file = event;
-      let fileName = file.name;
+      const fileName = file.name;
       if(fileName.lastIndexOf('.') <= 0) {
         return alert('Dodaj poprawny plik!')
       }
@@ -855,7 +1015,7 @@ export default {
       fileReader.readAsDataURL(file);
       this.editLogo.image = file;
     },
-    onDelete(id, order, category) {
+    onDelete(id, ext, order, category) {
 
       // remove item from db
       const delOrder = order;
@@ -893,22 +1053,35 @@ export default {
         }
 
         // disable remove delete button to prevent spam clicks
-        this.whileProcessing = true; 
-        // push changes to db
-        changeOrder.forEach(el => {
-          db.collection('projekty').doc(el.dataId).update({
-            order: el.order
-          }).then(() => {
-            this.whileProcessing = false;
-          }).catch(() => {
-            return alert('Coś poszło nie tak - błąd aktualizacji kolejności pozostałych projektów');
+        this.whileProcessing = true;
+
+        // remove corresponding image
+        const downloadURL = 'images/' + id + ext;
+        st.ref().child(downloadURL).delete().then(() => {
+          
+          // push changes of order to db
+          changeOrder.forEach(el => {
+            db.collection('projekty').doc(el.dataId).update({
+              order: el.order
+            }).then(() => {
+              this.whileProcessing = false;
+            }).catch(() => {
+              this.whileProcessing = false;
+              return alert('Coś poszło nie tak - błąd aktualizacji kolejności pozostałych projektów');
           });
+
+        });        
+        }).catch(() => {
+          this.whileProcessing = false;      
+          return alert('Coś poszło nie tak - błąd usuwania obrazu');
         });
+
         if(changeOrder.length == 0) {
           this.whileProcessing = false;
         }
       }).catch(() => {
-        return alert('Coś poszło nie tak');
+        this.whileProcessing = false;
+        return alert('Coś poszło nie tak - błąd usuwania projektu.');
       })
     },
     onSelectCategory() {
@@ -924,7 +1097,7 @@ export default {
     }
   },
   created() {
-    // getting items from db
+    // getting projects from db
     db.collection('projekty').orderBy('order').onSnapshot(response => {
       const changes = response.docChanges();
       changes.forEach(change => {
@@ -932,22 +1105,19 @@ export default {
           if(change.doc.data().category == 'ilustracje') {
             this.ilustracje.push({
               ...change.doc.data(),
-              dataId: change.doc.id,
-              imageUrl: require('@/assets/luca.png')
-            });          
+              dataId: change.doc.id
+            });
           }
           if(change.doc.data().category == 'design') {
             this.design.push({
               ...change.doc.data(),
-              dataId: change.doc.id,
-              imageUrl: require('@/assets/luca.png')
+              dataId: change.doc.id
             });          
           }
           if(change.doc.data().category == 'inne') {
             this.inne.push({
               ...change.doc.data(),
-              dataId: change.doc.id,
-              imageUrl: require('@/assets/luca.png')
+              dataId: change.doc.id
             });          
           }
         } else if(change.type === 'removed') {
@@ -972,6 +1142,49 @@ export default {
               }
             });
           }
+        } else if(change.type === 'modified') {
+          // update img url
+          if(change.doc.data().category == 'ilustracje') {
+            this.ilustracje.forEach(item => {
+              if(change.doc.id == item.dataId) {
+                item.imageUrl = change.doc.data().imageUrl;
+              }
+            });          
+          } else if(change.doc.data().category == 'design') {
+            this.design.forEach(item => {
+              if(change.doc.id == item.dataId) {
+                item.imageUrl = change.doc.data().imageUrl;
+              }
+            });
+          } else if(change.doc.data().category == 'inne') {
+            this.inne.forEach(item => {
+              if(change.doc.id == item.dataId) {
+                item.imageUrl = change.doc.data().imageUrl;
+              }
+            });            
+          }
+        }
+      });
+    });
+
+    // getting logo from db
+    db.collection('logo').onSnapshot(response => {
+      const changes = response.docChanges();
+      changes.forEach(change => {
+        this.logo = { 
+          ...change.doc.data(),
+          dataId: change.doc.id
+        }
+      });
+    });
+
+    // getting about info from db
+    db.collection('about').onSnapshot(response => {
+      const changes = response.docChanges();
+      changes.forEach(change => {
+        this.about = { 
+          ...change.doc.data(),
+          dataId: change.doc.id
         }
       });
     });

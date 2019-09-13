@@ -7,11 +7,9 @@
         <!-- image description -->
         <v-col sm="6" class="cyan content">
           <div>
-            <h2 class="display-2 text-center pt-3">About me</h2>
+            <h2 class="display-2 text-center pt-3">{{ about.title }}</h2>
             <div class="pa-10 body-1">
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, porro magnam. Maxime, aut? Aspernatur repellendus quis rerum voluptates magni, deserunt aliquid qui hic cum eum? Amet saepe distinctio autem tempora.</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, porro magnam. Maxime, aut? Aspernatur repellendus quis rerum voluptates magni, deserunt aliquid qui hic cum eum? Amet saepe distinctio autem tempora.</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, porro magnam. Maxime, aut? Aspernatur repellendus quis rerum voluptates magni, deserunt aliquid qui hic cum eum? Amet saepe distinctio autem tempora.</p>
+              <p>{{ about.content }}</p>
             </div>
           </div>
           <!-- navigation buttons -->
@@ -28,7 +26,7 @@
         <!-- images -->
         <v-col sm="6" class="pink">
           <div class="py-2 px-3" >
-            <v-img contain max-height="90vh" src="..\assets\luca.png"></v-img>
+            <v-img contain max-height="90vh" :src="about.imageUrl"></v-img>
           </div>
         </v-col>
       </v-row>
@@ -36,3 +34,25 @@
 
   </div>
 </template>
+<script>
+import { db } from '@/fb'
+
+export default {
+  data() {
+    return {
+      about: {}
+    }
+  },
+  created() {
+    // Loading about data from db  
+    db.collection('about').onSnapshot(response => {
+      const changes = response.docChanges();
+      changes.forEach(change => {
+        if(change.type === 'added'){
+          this.about = change.doc.data();
+        }
+      });
+    });    
+  }
+}
+</script>

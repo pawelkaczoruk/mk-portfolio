@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import db from '@/fb'
+import { db } from '@/fb'
 
 export default {
   data() {
@@ -65,8 +65,7 @@ export default {
           if(change.doc.data().category == 'design') {
             this.design.push({
               ...change.doc.data(),
-              dataId: change.doc.id,
-              imageUrl: require('@/assets/luca.png')
+              dataId: change.doc.id
             });          
           } 
         }

@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import { db } from '@/fb'
+
 export default {
   data() {
     return {
@@ -65,11 +67,17 @@ export default {
         { text: 'admin panel', route: '/admin' },
         { text: 'logout', route: ''}
       ],
-      logo: { 
-        category: 'logo', 
-        imageUrl: require('@/assets/logo.jpg') 
-      }
+      logo: {}
     }
+  },
+  created() {
+    // getting logo from db
+    db.collection('logo').onSnapshot(response => {
+      const changes = response.docChanges();
+      changes.forEach(change => {
+        this.logo = { ...change.doc.data() }
+      });
+    });
   }
 }
 </script>
