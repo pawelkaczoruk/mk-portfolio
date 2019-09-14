@@ -13,8 +13,8 @@
           <v-card 
             class="nav-card"
             min-width="170px" 
-            max-width="70vw" 
-            :href="item.destination">
+            max-width="70vw"
+            :to="item.destination">
             <v-img
               aspect-ratio="0.8"
               :src="item.imageUrl"
