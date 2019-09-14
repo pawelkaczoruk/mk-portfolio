@@ -1,15 +1,15 @@
 <template>
-  <div class="other">
+  <div class="other fill-height">
 
     <!-- Inne view -->
-    <div v-if="inne.length > 0">
-      <v-row >
+    <div class="fill-height" v-if="inne.length > 0">
+      <v-row class="fill-height">
         <!-- image description -->
-        <v-col sm="7" class="cyan content">
+        <v-col sm="12" md="7" class="cyan content">
           <div>
             <h2 class="display-2 text-center pt-3">{{ inne[counter].title }}</h2>
             <div class="pa-10 body-1">
-              <p>{{ inne[counter].content }}</p>
+              <p class="proj-content">{{ inne[counter].content }}</p>
             </div>
           </div>
           <!-- navigation buttons -->
@@ -17,7 +17,7 @@
             <v-btn 
               fab 
               icon 
-              @click="counter--"
+              @click="counter--; goTop()"
               :disabled="counter == 0">
               <v-icon large>mdi-menu-left-outline</v-icon>
             </v-btn>
@@ -25,16 +25,17 @@
             <v-btn 
               fab 
               icon 
-              @click="counter++"
+              @click="counter++; goTop()"
               :disabled="counter + 1 >= inne.length">
               <v-icon large>mdi-menu-right-outline</v-icon>
             </v-btn>
           </div>
         </v-col>
         <!-- images -->
-        <v-col sm="5" class="pink">
-          <div class="py-2 px-3" >
-            <v-img 
+        <v-col sm="12" md="5" class="pink">
+          <div class="center-img" >
+            <v-img
+              class="sticky py-2 px-3"
               contain 
               max-height="85vh" 
               :src="inne[counter].imageUrl"></v-img>
@@ -56,6 +57,12 @@ export default {
       counter: 0
     }
   },
+  methods: {
+    goTop() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+  },
   created() {
     // Loading projects from db  
     db.collection('projekty').orderBy('order').onSnapshot(response => {
@@ -74,7 +81,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

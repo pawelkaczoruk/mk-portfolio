@@ -2,552 +2,582 @@
   <div class="admin">
 
     <!-- login alert -->
-    <div id="login-alert">
+    <div v-if="!logged" id="login-alert">
       <p class="pink--text font-weight-medium">Nie jesteś zalogowany</p>
-      <v-btn class="indigo lighten-3">Zaloguj</v-btn>
+      <v-form 
+        v-if="typeof(login.email) == 'string' && typeof(login.password) == 'string'" 
+        ref="login">
+        <v-text-field
+          type="email"
+          filled
+          placeholder="E-mail"
+          prepend-icon="mdi-email-outline"
+          v-model="login.email"
+          :rules="inputRules"
+          label="E-mail"
+          required></v-text-field>
+        <v-text-field
+          type="password"
+          filled
+          placeholder="Password"
+          prepend-icon="mdi-lock-outline"
+          v-model="login.password"
+          :rules="inputRules"
+          label="Password"
+          required></v-text-field>
+      </v-form>
+      <v-btn
+        @click="onLogin()"
+        class="indigo lighten-3">Zaloguj</v-btn>
     </div>
 
-    <!-- navigation through sections -->
-    <nav id="section-nav">
-      <v-toolbar class="green" height="35px" flat>
-        <v-toolbar-items>
-          <div v-for="(el, i) in navigation" :key="i">
-            <v-btn 
-              @click="show(el.path)"
-              height="100%" 
-              tile 
-              text 
-              class="nav-btn mx-2"
-              :class="[toggle[el.path] ? 'active' : '']">{{ el.name }}</v-btn>
-          </div>
-        </v-toolbar-items> 
-      </v-toolbar>
-    </nav>
+    <div v-if="logged">
+      <!-- navigation through sections -->
+      <nav id="section-nav">
+        <v-toolbar class="green" height="35px" flat>
+          <v-toolbar-items>
+            <div v-for="(el, i) in navigation" :key="i">
+              <v-btn 
+                @click="show(el.path)"
+                height="100%" 
+                tile 
+                text 
+                class="nav-btn mx-2"
+                :class="[toggle[el.path] ? 'active' : '']">{{ el.name }}</v-btn>
+            </div>
+          </v-toolbar-items> 
+        </v-toolbar>
+      </nav>
 
-    <!-- ilustracje -->
-    <v-content v-if="toggle.ilustracje">
-      <v-container>
-        <div class="d-flex justify-space-around flex-wrap">
-          <div v-for="(item, i) in ilustracje" :key="i">
-            <v-card
-              elevation="3" 
-              tile 
-              class="display-card my-4 mx-2" 
-              height="320px" 
-              width="230px">
-              <v-img class="display-img" :src="item.imageUrl">
-                <v-card-title class="justify-space-between">
-                  <v-btn depressed 
-                    class="edit-btn" 
-                    x-small 
-                    fab
-                    @click="onEdit(item)">
-                    <v-icon>mdi-pencil-outline</v-icon>
-                  </v-btn>
-                  <v-btn 
-                    depressed 
-                    class="remove-btn" 
-                    x-small 
-                    fab
-                    :loading="whileProcessing"
-                    @click="onDelete(item.dataId, item.extension, item.order, item.category)">
-                    <v-icon>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </v-card-title>
-              </v-img>
-            </v-card>
-          </div>
-        </div>       
-      </v-container>
-    </v-content>
-
-    <!-- design -->
-    <v-content v-if="toggle.design">
-      <v-container>
-        <div class="d-flex justify-space-around flex-wrap">
-          <div v-for="(item, i) in design" :key="i">
-            <v-card 
-              elevation="3" 
-              tile 
-              class="display-card my-4 mx-2" 
-              height="320px" 
-              width="230px">
-              <v-img class="display-img" :src="item.imageUrl">
-                <v-card-title class="justify-space-between">
-                  <v-btn depressed 
-                    class="edit-btn" 
-                    x-small 
-                    fab
-                    @click="onEdit(item)">
-                    <v-icon>mdi-pencil-outline</v-icon>
-                  </v-btn>
-                  <v-btn 
-                    depressed 
-                    class="remove-btn" 
-                    x-small 
-                    fab
-                    :loading="whileProcessing"
-                    @click="onDelete(item.dataId, item.extension, item.order, item.category)">
-                    <v-icon>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </v-card-title>
-              </v-img>
-            </v-card>
-          </div>
-        </div>       
-      </v-container>
-    </v-content>
-
-    <!-- inne -->
-    <v-content v-if="toggle.inne">
-      <v-container>
-        <div class="d-flex justify-space-around flex-wrap">
-          <div v-for="(item, i) in inne" :key="i">
-            <v-card 
-              elevation="3" 
-              tile 
-              class="display-card my-4 mx-2" 
-              height="320px" 
-              width="230px">
-              <v-img class="display-img" :src="item.imageUrl">
-                <v-card-title class="justify-space-between">
-                  <v-btn depressed 
-                    class="edit-btn" 
-                    x-small 
-                    fab
-                    @click="onEdit(item)">
-                    <v-icon>mdi-pencil-outline</v-icon>
-                  </v-btn>
-                  <v-btn 
-                    depressed 
-                    class="remove-btn" 
-                    x-small 
-                    fab
-                    :loading="whileProcessing"
-                    @click="onDelete(item.dataId, item.extension, item.order, item.category)">
-                    <v-icon>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </v-card-title>
-              </v-img>
-            </v-card>
-          </div>
-        </div>       
-      </v-container>
-    </v-content>
-
-
-    <!-- about -->
-    <v-content v-if="toggle.about">
-      <v-container>
-        <div class="d-flex justify-space-around flex-wrap">
-            <v-card 
-              class="display-card my-4 mx-2" 
-              height="420px" 
-              width="302px"
-              tile>
-              <v-img 
+      <!-- ilustracje -->
+      <v-content v-if="toggle.ilustracje">
+        <v-container>
+          <div class="d-flex justify-space-around flex-wrap">
+            <div v-for="(item, i) in ilustracje" :key="i">
+              <v-card
                 elevation="3" 
-                class="display-img" 
-                :src="about.imageUrl">
-                <v-card-title class="justify-space-between">
-                  <v-btn
-                    depressed
-                    class="edit-btn" 
-                    x-small 
-                    fab
-                    @click="onAboutEdit(about)">
-                    <v-icon>mdi-pencil-outline</v-icon>
-                  </v-btn>
-                </v-card-title>
-              </v-img>
-            </v-card>
-        </div>       
-      </v-container>
-    </v-content>
+                tile 
+                class="display-card my-4 mx-2" 
+                height="320px" 
+                width="230px">
+                <v-img class="display-img" :src="item.imageUrl">
+                  <v-card-title class="justify-space-between">
+                    <v-btn depressed 
+                      class="edit-btn" 
+                      x-small 
+                      fab
+                      @click="onEdit(item)">
+                      <v-icon>mdi-pencil-outline</v-icon>
+                    </v-btn>
+                    <v-btn 
+                      depressed 
+                      class="remove-btn" 
+                      x-small 
+                      fab
+                      :loading="whileProcessing"
+                      @click="onDelete(item.dataId, item.extension, item.order, item.category)">
+                      <v-icon>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </v-card-title>
+                </v-img>
+              </v-card>
+            </div>
+          </div>       
+        </v-container>
+      </v-content>
 
-    <!-- logo -->
-    <v-content v-if="toggle.logo">
-      <v-container>
-        <div class="d-flex justify-space-around flex-wrap">
-            <v-card 
-              elevation="3" 
-              tile 
-              class="display-card my-4 mx-2" 
-              height="150px" 
-              width="562px">
-              <v-img 
-                class="display-img" 
-                :src="logo.imageUrl">
-                <v-card-title class="justify-space-between">
-                  <v-btn 
-                    class="edit-btn"
-                    depressed
-                    x-small 
-                    fab
-                    @click="onLogoEdit(logo)">
-                    <v-icon>mdi-pencil-outline</v-icon>
-                  </v-btn>
-                </v-card-title>
-              </v-img>
-            </v-card>
-        </div>       
-      </v-container>
-    </v-content>
+      <!-- design -->
+      <v-content v-if="toggle.design">
+        <v-container>
+          <div class="d-flex justify-space-around flex-wrap">
+            <div v-for="(item, i) in design" :key="i">
+              <v-card 
+                elevation="3" 
+                tile 
+                class="display-card my-4 mx-2" 
+                height="320px" 
+                width="230px">
+                <v-img class="display-img" :src="item.imageUrl">
+                  <v-card-title class="justify-space-between">
+                    <v-btn depressed 
+                      class="edit-btn" 
+                      x-small 
+                      fab
+                      @click="onEdit(item)">
+                      <v-icon>mdi-pencil-outline</v-icon>
+                    </v-btn>
+                    <v-btn 
+                      depressed 
+                      class="remove-btn" 
+                      x-small 
+                      fab
+                      :loading="whileProcessing"
+                      @click="onDelete(item.dataId, item.extension, item.order, item.category)">
+                      <v-icon>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </v-card-title>
+                </v-img>
+              </v-card>
+            </div>
+          </div>       
+        </v-container>
+      </v-content>
 
-    <!-- add new post - dialog -->
-    <v-dialog 
-      v-model="dialog"  
-      persistent 
-      no-click-animation>
-      <template v-slot:activator="{ on }">
-        <!-- button to add new content -->
-        <div id="add-btn">
-          <v-btn
-            v-on="on" 
-            @click="dialog != dialog; clear()" 
-            fab 
-            dark 
-            color="indigo"><v-icon>mdi-plus</v-icon></v-btn> 
+      <!-- inne -->
+      <v-content v-if="toggle.inne">
+        <v-container>
+          <div class="d-flex justify-space-around flex-wrap">
+            <div v-for="(item, i) in inne" :key="i">
+              <v-card 
+                elevation="3" 
+                tile 
+                class="display-card my-4 mx-2" 
+                height="320px" 
+                width="230px">
+                <v-img class="display-img" :src="item.imageUrl">
+                  <v-card-title class="justify-space-between">
+                    <v-btn depressed 
+                      class="edit-btn" 
+                      x-small 
+                      fab
+                      @click="onEdit(item)">
+                      <v-icon>mdi-pencil-outline</v-icon>
+                    </v-btn>
+                    <v-btn 
+                      depressed 
+                      class="remove-btn" 
+                      x-small 
+                      fab
+                      :loading="whileProcessing"
+                      @click="onDelete(item.dataId, item.extension, item.order, item.category)">
+                      <v-icon>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </v-card-title>
+                </v-img>
+              </v-card>
+            </div>
+          </div>       
+        </v-container>
+      </v-content>
+
+
+      <!-- about -->
+      <v-content v-if="toggle.about">
+        <v-container>
+          <div class="d-flex justify-space-around flex-wrap">
+              <v-card 
+                class="display-card my-4 mx-2" 
+                height="420px" 
+                width="302px"
+                tile>
+                <v-img 
+                  elevation="3" 
+                  class="display-img" 
+                  :src="about.imageUrl">
+                  <v-card-title class="justify-space-between">
+                    <v-btn
+                      depressed
+                      class="edit-btn" 
+                      x-small 
+                      fab
+                      @click="onAboutEdit(about)">
+                      <v-icon>mdi-pencil-outline</v-icon>
+                    </v-btn>
+                  </v-card-title>
+                </v-img>
+              </v-card>
+          </div>       
+        </v-container>
+      </v-content>
+
+      <!-- logo -->
+      <v-content v-if="toggle.logo">
+        <v-container>
+          <div class="d-flex justify-space-around flex-wrap">
+              <v-card 
+                elevation="3" 
+                tile 
+                class="display-card my-4 mx-2" 
+                height="150px" 
+                width="562px">
+                <v-img 
+                  class="display-img" 
+                  :src="logo.imageUrl">
+                  <v-card-title class="justify-space-between">
+                    <v-btn 
+                      class="edit-btn"
+                      depressed
+                      x-small 
+                      fab
+                      @click="onLogoEdit(logo)">
+                      <v-icon>mdi-pencil-outline</v-icon>
+                    </v-btn>
+                  </v-card-title>
+                </v-img>
+              </v-card>
+          </div>       
+        </v-container>
+      </v-content>
+
+      <!-- add new post - dialog -->
+      <v-dialog 
+        v-model="dialog"  
+        persistent 
+        no-click-animation>
+        <template v-slot:activator="{ on }">
+          <!-- button to add new content -->
+          <div id="add-btn">
+            <v-btn
+              v-on="on" 
+              @click="dialog != dialog; clear()" 
+              fab 
+              dark 
+              color="indigo"><v-icon>mdi-plus</v-icon></v-btn> 
+          </div>
+        </template>
+        <div>
+          <v-card>
+            <v-card-actions>
+              <div class="flex-grow-1"></div>
+              <v-btn
+                small
+                fab
+                text
+                :disabled="loading"
+                @click="dialog = false; clear()"><v-icon>mdi-close</v-icon></v-btn>
+            </v-card-actions>
+            <v-card-text>
+              <!-- form -->
+              <v-container class="form-content">
+                <v-content>
+                  <v-form ref="form">
+                    <v-row>
+                      <v-col sm="7">
+                        <v-row>
+                          <h2 class="form-title mx-auto display-1">Dodaj nowy post</h2>
+                        </v-row>
+                        <v-row>
+                          <v-file-input
+                            class="form-file"
+                            label="Plik"
+                            ref="fileInput"
+                            type="file"
+                            filled
+                            :rules="inputFileRules"
+                            required
+                            @change="onFileSelected"></v-file-input>                        
+                        </v-row>
+                        <v-row>
+                          <v-select 
+                            prepend-icon="mdi-file-document-box-outline"
+                            filled
+                            class="form-select" 
+                            :items="categories" 
+                            label="Kategoria"
+                            v-model="post.category"
+                            :rules="inputRules"
+                            @change="onSelectCategory()"
+                            required></v-select>                        
+                        </v-row>
+                        <v-row>
+                          <v-text-field 
+                            type="number"
+                            class="form-order"
+                            prepend-icon="mdi-reorder-vertical"
+                            filled
+                            label="Kolejność wyświetlania na stronie"
+                            v-model="post.order"
+                            disabled
+                            :rules="inputOrderRules"
+                            required></v-text-field>                      
+                        </v-row>  
+                        <v-row>
+                          <v-text-field 
+                            class="form-title"
+                            prepend-icon="mdi-fountain-pen-tip"
+                            filled
+                            label="Tytuł"
+                            v-model="post.title"
+                            :rules="inputRules"
+                            required></v-text-field>                        
+                        </v-row>
+                      </v-col>
+                      <v-col sm="5">
+                        <div class=selected-img>
+                          <v-img 
+                            :src="post.imageUrl" 
+                            height="400px"
+                            width="300px"></v-img>
+                        </div>
+                      </v-col>
+                    </v-row>
+                    <v-textarea
+                      class="form-textarea"
+                      prepend-icon="mdi-subtitles-outline"
+                      filled
+                      counter
+                      label="Opis"
+                      v-model="post.content"
+                      :rules="inputRules"
+                      required></v-textarea>
+                    <div class="form-submit">
+                      <v-btn 
+                        depressed
+                        color="green lighten-2"
+                        :loading="loading"
+                        @click="submit()">Zapisz</v-btn>
+                    </div>        
+                  </v-form>               
+                </v-content>             
+              </v-container>       
+            </v-card-text>
+          </v-card>
         </div>
-      </template>
-      <div>
-        <v-card>
-          <v-card-actions>
-            <div class="flex-grow-1"></div>
-            <v-btn
-              small
-              fab
-              text
-              :disabled="loading"
-              @click="dialog = false; clear()"><v-icon>mdi-close</v-icon></v-btn>
-          </v-card-actions>
-          <v-card-text>
-            <!-- form -->
-            <v-container class="form-content">
-              <v-content>
-                <v-form ref="form">
-                  <v-row>
-                    <v-col sm="7">
-                      <v-row>
-                        <h2 class="form-title mx-auto display-1">Dodaj nowy post</h2>
-                      </v-row>
-                      <v-row>
-                        <v-file-input
-                          class="form-file"
-                          label="Plik"
-                          ref="fileInput"
-                          type="file"
-                          filled
-                          :rules="inputFileRules"
-                          required
-                          @change="onFileSelected"></v-file-input>                        
-                      </v-row>
-                      <v-row>
-                        <v-select 
-                          prepend-icon="mdi-file-document-box-outline"
-                          filled
-                          class="form-select" 
-                          :items="categories" 
-                          label="Kategoria"
-                          v-model="post.category"
-                          :rules="inputRules"
-                          @change="onSelectCategory()"
-                          required></v-select>                        
-                      </v-row>
-                      <v-row>
-                        <v-text-field 
-                          type="number"
-                          class="form-order"
-                          prepend-icon="mdi-reorder-vertical"
-                          filled
-                          label="Kolejność wyświetlania na stronie"
-                          v-model="post.order"
-                          disabled
-                          :rules="inputOrderRules"
-                          required></v-text-field>                      
-                      </v-row>  
-                      <v-row>
-                        <v-text-field 
-                          class="form-title"
-                          prepend-icon="mdi-fountain-pen-tip"
-                          filled
-                          label="Tytuł"
-                          v-model="post.title"
-                          :rules="inputRules"
-                          required></v-text-field>                        
-                      </v-row>
-                    </v-col>
-                    <v-col sm="5">
-                      <div class=selected-img>
-                        <v-img 
-                          :src="post.imageUrl" 
-                          height="400px"
-                          width="300px"></v-img>
-                      </div>
-                    </v-col>
-                  </v-row>
-                  <v-textarea
-                    class="form-textarea"
-                    prepend-icon="mdi-subtitles-outline"
-                    filled
-                    counter
-                    label="Opis"
-                    v-model="post.content"
-                    :rules="inputRules"
-                    required></v-textarea>
-                  <div class="form-submit">
-                    <v-btn 
-                      depressed
-                      color="green lighten-2"
-                      :loading="loading"
-                      @click="submit()">Zapisz</v-btn>
-                  </div>        
-                </v-form>               
-              </v-content>             
-            </v-container>       
-          </v-card-text>
-        </v-card>
-      </div>
-    </v-dialog>
+      </v-dialog>
 
-    <!-- edit post -->
-    <v-dialog 
-      v-model="edit"
-      persistent
-      no-click-animation>
-      <div>
-        <v-card>
-          <v-card-actions>
-            <div class="flex-grow-1"></div>
-            <v-btn
-              small
-              fab
-              text
-              :disabled="loadingEdit"
-              @click="edit = false"><v-icon>mdi-close</v-icon></v-btn>
-          </v-card-actions>
-          <v-card-text>
-            <!-- form -->
-            <v-container class="form-content">
-              <v-content>
-                <v-form ref="form">
-                  <v-row>
-                    <v-col sm="7">
-                      <v-row>
-                        <h2 class="form-title mx-auto display-1">Edytuj post</h2>
-                      </v-row>
-                      <v-row>
-                        <v-text-field 
-                          class="form-title"
-                          prepend-icon="mdi-fountain-pen-tip"
-                          filled
-                          label="Tytuł"
-                          v-model="editPost.title"
-                          :rules="inputRules"
-                          required></v-text-field>                        
-                      </v-row>
-                      <v-row>
-                        <v-text-field 
-                          type="number"
-                          class="form-order"
-                          prepend-icon="mdi-reorder-vertical"
-                          filled
-                          label="Kolejność wyświetlania na stronie"
-                          v-model="editPost.order"
-                          :rules="inputOrderRules"
-                          required></v-text-field>                      
-                      </v-row>                      
-                      <v-row>
-                        <v-textarea
-                          class="form-textarea"
-                          prepend-icon="mdi-subtitles-outline"
-                          filled
-                          counter
-                          label="Opis"
-                          v-model="editPost.content"
-                          :rules="inputRules"
-                          required></v-textarea>                        
-                      </v-row>
-                    </v-col>
-                    <v-col sm="5">
-                      <div class=selected-img>
-                        <v-img 
-                          :src="editPost.imageUrl" 
-                          height="400px"
-                          width="300px"></v-img>
-                      </div>
-                    </v-col>
-                  </v-row>
+      <!-- edit post -->
+      <v-dialog 
+        v-model="edit"
+        persistent
+        no-click-animation>
+        <div>
+          <v-card>
+            <v-card-actions>
+              <div class="flex-grow-1"></div>
+              <v-btn
+                small
+                fab
+                text
+                :disabled="loadingEdit"
+                @click="edit = false"><v-icon>mdi-close</v-icon></v-btn>
+            </v-card-actions>
+            <v-card-text>
+              <!-- form -->
+              <v-container class="form-content">
+                <v-content>
+                  <v-form ref="form">
+                    <v-row>
+                      <v-col sm="7">
+                        <v-row>
+                          <h2 class="form-title mx-auto display-1">Edytuj post</h2>
+                        </v-row>
+                        <v-row>
+                          <v-text-field 
+                            class="form-title"
+                            prepend-icon="mdi-fountain-pen-tip"
+                            filled
+                            label="Tytuł"
+                            v-model="editPost.title"
+                            :rules="inputRules"
+                            required></v-text-field>                        
+                        </v-row>
+                        <v-row>
+                          <v-text-field 
+                            type="number"
+                            class="form-order"
+                            prepend-icon="mdi-reorder-vertical"
+                            filled
+                            label="Kolejność wyświetlania na stronie"
+                            v-model="editPost.order"
+                            :rules="inputOrderRules"
+                            required></v-text-field>                      
+                        </v-row>                      
+                        <v-row>
+                          <v-textarea
+                            class="form-textarea"
+                            prepend-icon="mdi-subtitles-outline"
+                            filled
+                            counter
+                            label="Opis"
+                            v-model="editPost.content"
+                            :rules="inputRules"
+                            required></v-textarea>                        
+                        </v-row>
+                      </v-col>
+                      <v-col sm="5">
+                        <div class=selected-img>
+                          <v-img 
+                            :src="editPost.imageUrl" 
+                            height="400px"
+                            width="300px"></v-img>
+                        </div>
+                      </v-col>
+                    </v-row>
 
-                  <div class="form-submit">
-                    <v-btn 
-                      depressed
-                      color="green lighten-2" 
-                      :loading="loadingEdit"
-                      @click="submitEdit()">Zapisz</v-btn>
-                  </div>        
-                </v-form>               
-              </v-content>             
-            </v-container>       
-          </v-card-text>
-        </v-card>
-      </div>
-    </v-dialog>
+                    <div class="form-submit">
+                      <v-btn 
+                        depressed
+                        color="green lighten-2" 
+                        :loading="loadingEdit"
+                        @click="submitEdit()">Zapisz</v-btn>
+                    </div>        
+                  </v-form>               
+                </v-content>             
+              </v-container>       
+            </v-card-text>
+          </v-card>
+        </div>
+      </v-dialog>
 
-    <!-- edit about section -->
-    <v-dialog 
-      persistent
-      no-click-animation
-      v-model="editAboutDialog">
-      <div>
-        <v-card>
-          <v-card-actions>
-            <div class="flex-grow-1"></div>
-            <v-btn
-              small
-              fab
-              text
-              :disabled="loadingEdit"
-              @click="editAboutDialog = false"><v-icon>mdi-close</v-icon></v-btn>
-          </v-card-actions>
-          <v-card-text>
-            <!-- form -->
-            <v-container class="form-content">
-              <v-content>
-                <v-form ref="formAbout">
-                  <v-row>
-                    <v-col sm="7">
-                      <v-row>
-                        <h2 class="form-title mx-auto display-1">Edytuj informacje o sobie</h2>
-                      </v-row>
-                      <v-row>
-                        <v-file-input
-                          class="form-file"
-                          label="Plik"
-                          ref="fileInput"
-                          type="file"
-                          filled
-                          required
-                          @change="onAboutEditFile"></v-file-input>                        
-                      </v-row>
-                      <v-row>
-                        <v-text-field 
-                          class="form-title"
-                          prepend-icon="mdi-fountain-pen-tip"
-                          filled
-                          label="Tytuł"
-                          v-model="editAbout.title"
-                          :rules="inputRules"
-                          required></v-text-field>                        
-                      </v-row>
-                      <v-row>
-                        <v-textarea
-                          class="form-textarea"
-                          prepend-icon="mdi-subtitles-outline"
-                          filled
-                          counter
-                          label="Opis"
-                          v-model="editAbout.content"
-                          :rules="inputRules"
-                          required></v-textarea>                        
-                      </v-row>
-                    </v-col>
-                    <v-col sm="5">
-                      <div class=selected-img>
-                        <v-img 
-                          :src="editAbout.imageUrl" 
-                          height="400px"
-                          width="300px"></v-img>
-                      </div>
-                    </v-col>
-                  </v-row>
+      <!-- edit about section -->
+      <v-dialog 
+        persistent
+        no-click-animation
+        v-model="editAboutDialog">
+        <div>
+          <v-card>
+            <v-card-actions>
+              <div class="flex-grow-1"></div>
+              <v-btn
+                small
+                fab
+                text
+                :disabled="loadingEdit"
+                @click="editAboutDialog = false"><v-icon>mdi-close</v-icon></v-btn>
+            </v-card-actions>
+            <v-card-text>
+              <!-- form -->
+              <v-container class="form-content">
+                <v-content>
+                  <v-form ref="formAbout">
+                    <v-row>
+                      <v-col sm="7">
+                        <v-row>
+                          <h2 class="form-title mx-auto display-1">Edytuj informacje o sobie</h2>
+                        </v-row>
+                        <v-row>
+                          <v-file-input
+                            class="form-file"
+                            label="Plik"
+                            ref="fileInput"
+                            type="file"
+                            filled
+                            required
+                            @change="onAboutEditFile"></v-file-input>                        
+                        </v-row>
+                        <v-row>
+                          <v-text-field 
+                            class="form-title"
+                            prepend-icon="mdi-fountain-pen-tip"
+                            filled
+                            label="Tytuł"
+                            v-model="editAbout.title"
+                            :rules="inputRules"
+                            required></v-text-field>                        
+                        </v-row>
+                        <v-row>
+                          <v-textarea
+                            class="form-textarea"
+                            prepend-icon="mdi-subtitles-outline"
+                            filled
+                            counter
+                            label="Opis"
+                            v-model="editAbout.content"
+                            :rules="inputRules"
+                            required></v-textarea>                        
+                        </v-row>
+                      </v-col>
+                      <v-col sm="5">
+                        <div class=selected-img>
+                          <v-img 
+                            :src="editAbout.imageUrl" 
+                            height="400px"
+                            width="300px"></v-img>
+                        </div>
+                      </v-col>
+                    </v-row>
 
-                  <div class="form-submit">
-                    <v-btn 
-                      depressed
-                      color="green lighten-2" 
-                      :loading="loadingEdit"
-                      @click="submitEditAbout()">Zapisz</v-btn>
-                  </div>        
-                </v-form>               
-              </v-content>             
-            </v-container>       
-          </v-card-text>
-        </v-card>
-      </div>
-    </v-dialog>
+                    <div class="form-submit">
+                      <v-btn 
+                        depressed
+                        color="green lighten-2" 
+                        :loading="loadingEdit"
+                        @click="submitEditAbout()">Zapisz</v-btn>
+                    </div>        
+                  </v-form>               
+                </v-content>             
+              </v-container>       
+            </v-card-text>
+          </v-card>
+        </div>
+      </v-dialog>
 
-    <!-- edit logo -->
-    <v-dialog 
-      persistent
-      no-click-animation
-      v-model="editLogoDialog">
-      <div>
-        <v-card>
-          <v-card-actions>
-            <div class="flex-grow-1"></div>
-            <v-btn
-              small
-              fab
-              text
-              :disabled="loadingEdit"
-              @click="editLogoDialog = false"><v-icon>mdi-close</v-icon></v-btn>
-          </v-card-actions>
-          <v-card-text>
-            <!-- form -->
-            <v-container class="form-content">
-              <v-content>
-                <v-form ref="formLogo">
-                  <v-row>
-                    <v-col sm="7">
-                      <v-row>
-                        <h2 class="form-title mx-auto display-1">Edytuj logo</h2>
-                      </v-row>
-                      <v-row>
-                        <v-file-input
-                          class="form-file"
-                          label="Plik"
-                          ref="fileInput"
-                          type="file"
-                          filled
-                          required
-                          @change="onLogoEditFile"></v-file-input>                        
-                      </v-row>
-                    </v-col>
-                    <v-col sm="5">
-                      <div class=selected-img>
-                        <v-img 
-                          :src="editLogo.imageUrl" 
-                          height="80px"
-                          width="300px"></v-img>
-                      </div>
-                    </v-col>
-                  </v-row>
+      <!-- edit logo -->
+      <v-dialog 
+        persistent
+        no-click-animation
+        v-model="editLogoDialog">
+        <div>
+          <v-card>
+            <v-card-actions>
+              <div class="flex-grow-1"></div>
+              <v-btn
+                small
+                fab
+                text
+                :disabled="loadingEdit"
+                @click="editLogoDialog = false"><v-icon>mdi-close</v-icon></v-btn>
+            </v-card-actions>
+            <v-card-text>
+              <!-- form -->
+              <v-container class="form-content">
+                <v-content>
+                  <v-form ref="formLogo">
+                    <v-row>
+                      <v-col sm="7">
+                        <v-row>
+                          <h2 class="form-title mx-auto display-1">Edytuj logo</h2>
+                        </v-row>
+                        <v-row>
+                          <v-file-input
+                            class="form-file"
+                            label="Plik"
+                            ref="fileInput"
+                            type="file"
+                            filled
+                            required
+                            @change="onLogoEditFile"></v-file-input>                        
+                        </v-row>
+                      </v-col>
+                      <v-col sm="5">
+                        <div class=selected-img>
+                          <v-img 
+                            :src="editLogo.imageUrl" 
+                            height="80px"
+                            width="300px"></v-img>
+                        </div>
+                      </v-col>
+                    </v-row>
 
-                  <div class="form-submit">
-                    <v-btn 
-                      depressed
-                      color="green lighten-2" 
-                      :loading="loadingEdit"
-                      @click="submitEditLogo()">Zapisz</v-btn>
-                  </div>        
-                </v-form>               
-              </v-content>             
-            </v-container>       
-          </v-card-text>
-        </v-card>
-      </div>
-    </v-dialog>
-
+                    <div class="form-submit">
+                      <v-btn 
+                        depressed
+                        color="green lighten-2" 
+                        :loading="loadingEdit"
+                        @click="submitEditLogo()">Zapisz</v-btn>
+                    </div>        
+                  </v-form>               
+                </v-content>             
+              </v-container>       
+            </v-card-text>
+          </v-card>
+        </div>
+      </v-dialog>
+    </div>
   </div>
 </template>
 
 <script>
-import { db, st } from '@/fb'
+import { db, st, auth } from '@/fb'
 
 export default {
   data() {
     return {
+      logged: false,
+      login: {
+        email: '',
+        password: ''
+      },
       loadingEdit: false,
       whileProcessing: false,
       loading: false,
@@ -948,6 +978,16 @@ export default {
         this.about.image = this.editAbout.image;
       }
     },
+    onLogin() {
+      // validate
+      if(this.$refs.login.validate()) {
+        auth.signInWithEmailAndPassword(this.login.email, this.login.password).then(() => {
+          this.logged = true;
+        }).catch(() => {
+          return alert('Błąd logowania');
+        });
+      }
+    },
     onEdit(item) {
       this.order = parseInt(item.order);
       this.editPost.order = item.order;
@@ -1097,96 +1137,116 @@ export default {
     }
   },
   created() {
-    // getting projects from db
-    db.collection('projekty').orderBy('order').onSnapshot(response => {
-      const changes = response.docChanges();
-      changes.forEach(change => {
-        if(change.type === 'added'){
-          if(change.doc.data().category == 'ilustracje') {
-            this.ilustracje.push({
-              ...change.doc.data(),
-              dataId: change.doc.id
-            });
-          }
-          if(change.doc.data().category == 'design') {
-            this.design.push({
-              ...change.doc.data(),
-              dataId: change.doc.id
-            });          
-          }
-          if(change.doc.data().category == 'inne') {
-            this.inne.push({
-              ...change.doc.data(),
-              dataId: change.doc.id
-            });          
-          }
-        } else if(change.type === 'removed') {
-          if(change.doc.data().category == 'ilustracje') {
-            this.ilustracje.forEach((item, index) => {
-              if(item.dataId == change.doc.id) {
-                this.ilustracje.splice(index, 1);
+    // check if admin is logged in
+    auth.onAuthStateChanged((user) => {
+      if(user) {
+        this.ilustracje = [];
+        this.design = [];
+        this.inne = [];
+        this.logo = {};
+        this.about = {};
+        // getting projects from db
+        db.collection('projekty').orderBy('order').onSnapshot(response => {
+          const changes = response.docChanges();
+          changes.forEach(change => {
+            if(change.type === 'added'){
+              if(change.doc.data().category == 'ilustracje') {
+                this.ilustracje.push({
+                  ...change.doc.data(),
+                  dataId: change.doc.id
+                });
               }
-            });
-          }
-          if(change.doc.data().category == 'design') {
-            this.design.forEach((item, index) => {
-              if(item.dataId == change.doc.id) {
-                this.design.splice(index, 1);
+              if(change.doc.data().category == 'design') {
+                this.design.push({
+                  ...change.doc.data(),
+                  dataId: change.doc.id
+                });          
               }
-            });
-          }
-          if(change.doc.data().category == 'inne') {
-            this.inne.forEach((item, index) => {
-              if(item.dataId == change.doc.id) {
-                this.inne.splice(index, 1);
+              if(change.doc.data().category == 'inne') {
+                this.inne.push({
+                  ...change.doc.data(),
+                  dataId: change.doc.id
+                });          
               }
-            });
-          }
-        } else if(change.type === 'modified') {
-          // update img url
-          if(change.doc.data().category == 'ilustracje') {
-            this.ilustracje.forEach(item => {
-              if(change.doc.id == item.dataId) {
-                item.imageUrl = change.doc.data().imageUrl;
+            } else if(change.type === 'removed') {
+              if(change.doc.data().category == 'ilustracje') {
+                this.ilustracje.forEach((item, index) => {
+                  if(item.dataId == change.doc.id) {
+                    this.ilustracje.splice(index, 1);
+                  }
+                });
               }
-            });          
-          } else if(change.doc.data().category == 'design') {
-            this.design.forEach(item => {
-              if(change.doc.id == item.dataId) {
-                item.imageUrl = change.doc.data().imageUrl;
+              if(change.doc.data().category == 'design') {
+                this.design.forEach((item, index) => {
+                  if(item.dataId == change.doc.id) {
+                    this.design.splice(index, 1);
+                  }
+                });
               }
-            });
-          } else if(change.doc.data().category == 'inne') {
-            this.inne.forEach(item => {
-              if(change.doc.id == item.dataId) {
-                item.imageUrl = change.doc.data().imageUrl;
+              if(change.doc.data().category == 'inne') {
+                this.inne.forEach((item, index) => {
+                  if(item.dataId == change.doc.id) {
+                    this.inne.splice(index, 1);
+                  }
+                });
               }
-            });            
-          }
-        }
-      });
-    });
+            } else if(change.type === 'modified') {
+              // update img url
+              if(change.doc.data().category == 'ilustracje') {
+                this.ilustracje.forEach(item => {
+                  if(change.doc.id == item.dataId) {
+                    item.imageUrl = change.doc.data().imageUrl;
+                  }
+                });          
+              } else if(change.doc.data().category == 'design') {
+                this.design.forEach(item => {
+                  if(change.doc.id == item.dataId) {
+                    item.imageUrl = change.doc.data().imageUrl;
+                  }
+                });
+              } else if(change.doc.data().category == 'inne') {
+                this.inne.forEach(item => {
+                  if(change.doc.id == item.dataId) {
+                    item.imageUrl = change.doc.data().imageUrl;
+                  }
+                });            
+              }
+            }
+          });
+        });
 
-    // getting logo from db
-    db.collection('logo').onSnapshot(response => {
-      const changes = response.docChanges();
-      changes.forEach(change => {
-        this.logo = { 
-          ...change.doc.data(),
-          dataId: change.doc.id
-        }
-      });
-    });
+        // getting logo from db
+        db.collection('logo').onSnapshot(response => {
+          const changes = response.docChanges();
+          changes.forEach(change => {
+            this.logo = { 
+              ...change.doc.data(),
+              dataId: change.doc.id
+            }
+          });
+        });
 
-    // getting about info from db
-    db.collection('about').onSnapshot(response => {
-      const changes = response.docChanges();
-      changes.forEach(change => {
-        this.about = { 
-          ...change.doc.data(),
-          dataId: change.doc.id
-        }
-      });
+        // getting about info from db
+        db.collection('about').onSnapshot(response => {
+          const changes = response.docChanges();
+          changes.forEach(change => {
+            this.about = { 
+              ...change.doc.data(),
+              dataId: change.doc.id
+            }
+          });
+        });
+
+        this.logged = true;
+      } else {
+        this.ilustracje = [];
+        this.design = [];
+        this.inne = [];
+        this.logo = {};
+        this.about = {};
+        
+        this.logged = false;
+      }
     });
   }
 }
@@ -1246,11 +1306,21 @@ export default {
     text-align: center;
   }
   #login-alert {
+    padding-top: 20vh;
     text-align: center;
-    display: none;
+    width: 50%;
+    margin: auto;
   }
   .active {
     background: rgb(3, 144, 3);
+  }
+
+  @media only screen and (max-width: 600px) {
+    #login-alert {
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 
 </style>

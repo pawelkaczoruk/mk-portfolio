@@ -1,15 +1,15 @@
 <template>
-  <div class="illustrations">
+  <div class="illustrations fill-height">
 
     <!-- Ilustracje view -->
-    <div v-if="ilustracje.length > 0">
-      <v-row>
+    <div class="fill-height" v-if="ilustracje.length > 0">
+      <v-row class="fill-height">
         <!-- image description -->
-        <v-col sm="7" class="cyan content">
+        <v-col sm="12" md="7" class="cyan content">
           <div>
             <h2 class="display-2 text-center pt-3">{{ ilustracje[counter].title }}</h2>
             <div class="pa-10 body-1">
-              <p>{{ ilustracje[counter].content }}</p>
+              <p class="proj-content">{{ ilustracje[counter].content }}</p>
             </div>
           </div>
           <!-- navigation buttons -->
@@ -17,7 +17,7 @@
             <v-btn 
               fab 
               icon 
-              @click="counter--"
+              @click="counter--; goTop()"
               :disabled="counter==0">
               <v-icon large>mdi-menu-left-outline</v-icon>
             </v-btn>
@@ -25,16 +25,17 @@
             <v-btn 
               fab 
               icon 
-              @click="counter++"
+              @click="counter++; goTop()"
               :disabled="counter + 1 >= ilustracje.length">
               <v-icon large>mdi-menu-right-outline</v-icon>
             </v-btn>
           </div>
         </v-col>
         <!-- images -->
-        <v-col sm="5" class="pink">
-          <div class="py-2 px-3">
+        <v-col sm="12" md="5" class="pink">
+          <div class="center-img">
             <v-img 
+              class="sticky py-2 px-3"
               contain 
               max-height="85vh" 
               :src="ilustracje[counter].imageUrl"></v-img>
@@ -58,7 +59,12 @@ export default {
 
     }
   },
-
+  methods: {
+    goTop() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+  },
   created() {
     // Loading projects from db  
     db.collection('projekty').orderBy('order').onSnapshot(response => {
@@ -79,14 +85,46 @@ export default {
 </script>
 
 <style>
+  .v-content{
+    display: flex;
+    height: 100%;
+  }
+  .v-content__wrap {
+    height: 100%;
+  }
+  .fill-height {
+    height: 100%;
+  }
   .content {
     display: flex;
     flex-direction: column;
   }
+  .proj-content {
+    text-align: justify;
+    white-space: pre-wrap;
+  }
   .nav-btns {
     font-weight: 600;
-    text-align:right;
+    text-align: right;
     bottom: 0;
     margin-top: auto;
+  }
+  .center-img {
+    height: 100%;
+    display: flex;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 12px;
+  } 
+  .sticky {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 12vh;
+  }
+  @media only screen and (max-width: 960px) {
+    .center-img {
+      margin-right: 20px;
+      margin-left: 20px;
+    }
   }
 </style>

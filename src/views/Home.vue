@@ -1,17 +1,17 @@
 <template>
-  <div class="home">
+  <div>
 
     <!-- navigation cards -->
     <div>
       <v-container>
-      <v-row class="justify-space-around">  
-        <v-col 
+      <v-row class="fill-height justify-space-around">  
+        <v-col
           v-for="(item, i) in navIcons" 
-          :key="i" 
+          :key="i"
           sm="4" 
-          md="3">
+          md="4">
           <v-card 
-            class="nav-card" 
+            class="nav-card"
             min-width="170px" 
             max-width="70vw" 
             :href="item.destination">

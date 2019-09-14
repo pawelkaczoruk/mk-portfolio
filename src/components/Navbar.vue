@@ -21,12 +21,23 @@
 
       <!-- nav buttons -->
       <div class="d-none d-sm-flex">
-        <v-btn 
+        <v-btn
           v-for="(link, i) in links" 
           :key="i" 
           text 
           router 
           :to="link.route">{{ link.text }}</v-btn>
+
+        <v-btn
+          v-if="logged"
+          text 
+          router 
+          :to="adminPanel.route">{{ adminPanel.text }}</v-btn>
+
+        <v-btn
+          v-if="logged"
+          text
+          @click="onLogout()">{{ logout.text }}</v-btn>
       </div>
 
 
@@ -46,6 +57,24 @@
                 {{ link.text }}              
               </v-list-item-content>
             </v-list-item>
+
+            <v-list-item 
+              v-if="logged"
+              class="pl-12 pt-3 pb-3"
+              :to="adminPanel.route">
+              <v-list-item-content>
+                {{ adminPanel.text }}              
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item
+              v-if="logged"
+              class="pl-12 pt-3 pb-3"
+              @click="onLogout()">
+              <v-list-item-content>
+                {{ logout.text }}           
+              </v-list-item-content>
+            </v-list-item>
           </v-list>          
       </v-navigation-drawer>
     </v-app-bar>
@@ -54,20 +83,30 @@
 </template>
 
 <script>
-import { db } from '@/fb'
+import { db, auth } from '@/fb'
 
 export default {
   data() {
     return {
+      logged: false,
       drawer: false,
       links: [
         { text: 'portfolio', route: '/' },
         { text: 'about me', route: '/about' },
-        { text: 'contact', route: '/contact' },
-        { text: 'admin panel', route: '/admin' },
-        { text: 'logout', route: ''}
+        { text: 'contact', route: '/contact' }
       ],
+      logout: { text: 'logout' },
+      adminPanel: { text: 'admin panel', route: '/admin' },
       logo: {}
+    }
+  },
+  methods: {
+    onLogout() {
+      auth.signOut().then(() => {
+        this.logged = false;
+      }).catch(() => {
+        return alert('Błąd przy wylogowywaniu');
+      });
     }
   },
   created() {
@@ -77,6 +116,15 @@ export default {
       changes.forEach(change => {
         this.logo = { ...change.doc.data() }
       });
+    });
+
+    // check if admin is logged in
+    auth.onAuthStateChanged((user) => {
+      if(user) {
+        this.logged = true;
+      } else {
+        this.logged = false;
+      }
     });
   }
 }
