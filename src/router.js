@@ -30,8 +30,8 @@ export default new Router({
       component: Contact
     },
     {
-      path: '/admin',
-      name: 'admin',
+      path: '/manage',
+      name: 'manage',
       component: AdminPanel
     },
     {

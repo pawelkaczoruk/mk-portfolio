@@ -3,15 +3,17 @@
 
     <!-- Inne view -->
     <div class="fill-height" v-if="inne.length > 0">
-      <v-row class="fill-height">
+      <div class="display-content fill-height">
+
         <!-- image description -->
-        <v-col sm="12" md="7" class="cyan content">
+        <div class="text-content">
           <div>
-            <h2 class="display-2 text-center pt-3">{{ inne[counter].title }}</h2>
-            <div class="pa-10 body-1">
+            <h2 class="display-1 pl-9">{{ inne[counter].title.toUpperCase() }}</h2>
+            <div class="pa-9 pt-12 pb-2 body-1">
               <p class="proj-content">{{ inne[counter].content }}</p>
             </div>
           </div>
+
           <!-- navigation buttons -->
           <div class="nav-btns">
             <v-btn 
@@ -19,7 +21,7 @@
               icon 
               @click="counter--; goTop()"
               :disabled="counter == 0">
-              <v-icon large>mdi-menu-left-outline</v-icon>
+              <v-icon class="arrow-icon">mdi-menu-left-outline</v-icon>
             </v-btn>
             <span>{{ counter + 1 }} / {{ inne.length }}</span>
             <v-btn 
@@ -27,21 +29,23 @@
               icon 
               @click="counter++; goTop()"
               :disabled="counter + 1 >= inne.length">
-              <v-icon large>mdi-menu-right-outline</v-icon>
+              <v-icon class="arrow-icon">mdi-menu-right-outline</v-icon>
             </v-btn>
           </div>
-        </v-col>
+        </div>
+
         <!-- images -->
-        <v-col sm="12" md="5" class="pink">
+        <div class="img-content">
           <div class="center-img" >
             <v-img
               class="sticky py-2 px-3"
               contain 
-              max-height="85vh" 
+              max-height="78vh" 
               :src="inne[counter].imageUrl"></v-img>
           </div>
-        </v-col>
-      </v-row>
+        </div>
+        
+      </div>
     </div>
     
   </div>

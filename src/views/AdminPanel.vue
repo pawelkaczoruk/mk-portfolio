@@ -1,5 +1,5 @@
 <template>
-  <div class="admin">
+  <div class="manage">
 
     <!-- login alert -->
     <div v-if="!logged" id="login-alert">
@@ -34,7 +34,7 @@
     <div v-if="logged">
       <!-- navigation through sections -->
       <nav id="section-nav">
-        <v-toolbar class="green" height="35px" flat>
+        <v-toolbar height="35px" flat>
           <v-toolbar-items>
             <div v-for="(el, i) in navigation" :key="i">
               <v-btn 
@@ -1253,6 +1253,7 @@ export default {
 </script>
 
 <style>
+  /* add new post and edit - form styling */
   .v-card__text {
     padding-top: 0;
     margin-top: -41px;
@@ -1260,13 +1261,6 @@ export default {
   .v-card__actions {
     padding-bottom: 0;
     padding-top: 0;
-  }
-  .edit-btn {
-    border: 2px solid rgba(14, 79, 165, 0.65);
-  }
-  .remove-btn {
-    background: rgba(255, 2, 2, 0.65);
-    border: 2px solid rgba(255, 2, 2, 0.65);
   }
   .form-title {
     margin-bottom: 30px;
@@ -1285,6 +1279,11 @@ export default {
     padding-left: 60px;
     padding-right: 60px;
   }
+  p.title, .form-title {
+    text-align: center;
+  }  
+
+  /* display card and image styles */
   .display-card {
     display: inline-block;
   }
@@ -1292,6 +1291,17 @@ export default {
     width: 100%;
     height: 100%;
   }
+
+  /* edit and remove buttons styles */
+  .edit-btn {
+    border: 2px solid rgba(14, 79, 165, 0.65);
+  }
+  .remove-btn {
+    background: rgba(255, 2, 2, 0.65);
+    border: 2px solid rgba(255, 2, 2, 0.65);
+  }
+
+  /* button to add new post */
   #add-btn {
     position: fixed;
     bottom: 0;
@@ -1299,22 +1309,25 @@ export default {
     margin-bottom: 10px;
     margin-right: 5px;
   }
+
+  /* navigation styling */
   #section-nav {
-    border-top: 2px solid rgb(12, 56, 12);
+    border-top: 2px solid rgb(82, 79, 79);
+    border-bottom: 2px solid rgb(82, 79, 79);
   }
-  p.title, .form-title {
-    text-align: center;
+  .active {
+    background: rgb(93, 123, 144);
   }
+
+  /* login view styling */
   #login-alert {
     padding-top: 20vh;
     text-align: center;
     width: 50%;
     margin: auto;
   }
-  .active {
-    background: rgb(3, 144, 3);
-  }
 
+  /* on small screens */
   @media only screen and (max-width: 600px) {
     #login-alert {
       width: 100%;

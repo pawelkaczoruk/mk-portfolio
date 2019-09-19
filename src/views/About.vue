@@ -2,28 +2,31 @@
   <div class="about fill-height">
 
     <!-- Contact view -->
-    <div class="fill-height">
-      <v-row class="fill-height">
+    <div class="fill-height" v-if="Object.keys(about).length != 0">
+      <div class="display-content fill-height">
+
         <!-- image description -->
-        <v-col sm="12" md="6" class="cyan content">
+        <div class="about-content">
           <div>
-            <h2 class="display-2 text-center pt-3">{{ about.title }}</h2>
-            <div class="pa-10 body-1">
+            <h2 class="display-1 pl-9">{{ about.title.toUpperCase() }}</h2>
+            <div class="pa-9 pt-12 pb-2 body-1">
               <p class="proj-content">{{ about.content }}</p>
             </div>
           </div>
-        </v-col>
+        </div>
+
         <!-- images -->
-        <v-col sm="12" md="6" class="pink">
+        <div class="me-img-content">
           <div class="center-img" >
             <v-img
               class="sticky py-2 px-3"
               contain 
-              max-height="85vh" 
+              max-height="78vh" 
               :src="about.imageUrl"></v-img>
           </div>
-        </v-col>
-      </v-row>
+        </div>
+
+      </div>
     </div>
 
   </div>
@@ -46,7 +49,57 @@ export default {
           this.about = change.doc.data();
         }
       });
-    });    
+    });   
   }
 }
 </script>
+<style>
+  /* text and img styling */
+  .about-content {
+    background: rgb(13, 56, 86);
+    color: white;
+    padding-top: 67px;
+    padding-left: 54px;
+    padding-right: 54px;
+    min-height: 100%;
+    float: left;
+    width: 56%;
+    display: flex;
+    flex-direction: column;
+  }  
+  .me-img-content {
+    background: rgb(255, 0, 0);
+    float: right;
+    width: 44%;
+    height: 100%;
+  }
+
+  /* smaller size screens */
+  @media only screen and (max-width: 960px) {
+    .me-img-content {
+      width: 100%;
+      height: auto;
+      float: none;
+    }
+    .display-content .me-img-content {
+      order: 1;
+    }
+    .display-content .about-content {
+      order: 2;
+    }
+    .about-content {
+      min-height: auto;
+      width: 100%;
+      height: auto;
+      float: none;
+    }
+  }
+
+  /* mobile size screens */
+  @media only screen and (max-width: 600px) {
+    .about-content {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
+</style>
