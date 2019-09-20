@@ -1,7 +1,7 @@
 <template>
   <div class="about fill-height">
 
-    <!-- Contact view -->
+    <!-- about view -->
     <div class="fill-height" v-if="Object.keys(about).length != 0">
       <div class="display-content fill-height">
 
