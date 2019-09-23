@@ -8,8 +8,8 @@
         <!-- image description -->
         <div class="text-content">
           <div>
-            <h2 class="display-1 pl-9">{{ design[counter].title.toUpperCase() }}</h2>
-            <div class="pa-9 pt-12 pb-2 body-1">
+            <h2 class="display-1 pb-12">{{ design[counter].title.toUpperCase() }}</h2>
+            <div class="body-1">
               <p class="proj-content">{{ design[counter].content }}</p>
             </div>
           </div>

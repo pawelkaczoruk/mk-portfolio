@@ -65,7 +65,7 @@
             </v-list-item>
 
             <v-list-item 
-              v-if="true"
+              v-if="logged"
               class="pl-12 pt-3 pb-3"
               :to="adminPanel.route">
               <v-list-item-content>
@@ -141,7 +141,7 @@ export default {
     flex-grow: 1;
   }
   .nav-logo {
-    margin-left: 10vw;
+    margin-left: 9vw;
   }
   @media only screen and (max-width: 960px) {
     .fill-space {
@@ -159,7 +159,7 @@ export default {
   /* styling buttons */
   .navbar-btns .v-btn{
     margin-left: 11px;
-    margin-right: 11px;
+    margin-right: 9px;
   }
   .navbar-btns .v-btn--active {
     background: rgba(177, 233, 255, 0.63);
@@ -169,7 +169,7 @@ export default {
     font-size: 18px;
   }  
   .navbar-btns {
-    margin-right: 10vw;
+    margin-right: 8vw;
   }
 
   /* styling list */
