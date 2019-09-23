@@ -3,7 +3,8 @@
     <!-- background -->
     <div class="home-background"></div>
 
-    <!-- navigation cards -->
+
+    <!-- navigation cards 
     <div class="nav-container fill-height">
       <v-container class="fill-height">
 
@@ -33,6 +34,32 @@
         </v-row>
 
       </v-container>
+    </div> -->
+
+    <!-- navigation cards -->
+    <div class="nav-container fill-height">
+
+      <div
+        class="to-center single-card"
+        v-for="(item, i) in navIcons" 
+        :key="i">
+        <v-card
+          tile
+          flat
+          class="nav-card"
+          :to="item.destination">
+          <v-img           
+            :src="item.imageUrl"
+          >
+            <v-card-title
+              class="align-end fill-height text-uppercase"
+            >
+              <span class="mx-auto font-weight-medium title text-center">{{ item.title }}</span>
+            </v-card-title>
+          </v-img>
+        </v-card>
+      </div>
+
     </div>
 
   </div>
@@ -64,18 +91,21 @@ export default {
   }
 
   /* positioning and styles for navigation cards */
-  .nav-container .row{
-    width: 100%;
+  .single-card {
+    display: inline-block;
+    width: 21vw;
   }
   .nav-container {
-    margin-left: 5vw;
-    margin-right: 5vw;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    display: flex;
+    justify-content: space-around;
   }
-  .to-bottom {
-    margin-bottom: 5px;
+  .to-center {
+    margin-bottom: auto;
     margin-top: auto;
+    padding-top: 3%;
     position: relative;
-    padding: 5px;
   }
   .nav-card {
     height: 66vh;
@@ -89,10 +119,13 @@ export default {
     .home-background {
       width: 100%;
     }
-    
-    .nav-container .container {
-      width: 100%;
+    .nav-container {
+      display: inline;
     }
+    .single-card {
+      display: block;
+      width: 100%;
+    }    
     .nav-card {
       height: 70vh;
       width: 60vw;
