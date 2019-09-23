@@ -81,8 +81,8 @@ export default {
     height: 100%;
   }
 
-  /* for small screens */
-  @media only screen and (max-width: 600px) {
+  /* smaller screens */
+  @media only screen and (max-width: 960px) {
     .home-background {
       width: 100%;
     }
@@ -94,14 +94,14 @@ export default {
       width: 100%;
     }    
     .nav-card {
-      height: 70vh;
-      width: 60vw;
+      height: 400px;
+      width: 200px;
       min-width: 270px;
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 20px;
     }
-  }
+  }  
 
   /* will be removed later when im gonna get proper images */
   .title {
