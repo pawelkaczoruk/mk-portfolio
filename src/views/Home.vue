@@ -3,39 +3,6 @@
     <!-- background -->
     <div class="home-background"></div>
 
-
-    <!-- navigation cards 
-    <div class="nav-container fill-height">
-      <v-container class="fill-height">
-
-        <v-row class="fill-height justify-space-around">  
-          <v-col
-            class="to-bottom"
-            v-for="(item, i) in navIcons" 
-            :key="i"
-            sm="3" 
-            md="3">
-            <v-card
-              tile
-              flat
-              class="nav-card"
-              :to="item.destination">
-              <v-img           
-                :src="item.imageUrl"
-              >
-                <v-card-title
-                  class="align-end fill-height text-uppercase"
-                >
-                  <span class="mx-auto font-weight-medium title text-center">{{ item.title }}</span>
-                </v-card-title>
-              </v-img>
-            </v-card>
-          </v-col>
-        </v-row>
-
-      </v-container>
-    </div> -->
-
     <!-- navigation cards -->
     <div class="nav-container fill-height">
 
@@ -99,7 +66,7 @@ export default {
     margin-left: 10vw;
     margin-right: 10vw;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
   }
   .to-center {
     margin-bottom: auto;
