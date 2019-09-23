@@ -65,7 +65,7 @@
             </v-list-item>
 
             <v-list-item 
-              v-if="true"
+              v-if="logged"
               class="pl-12 pt-3 pb-3"
               :to="adminPanel.route">
               <v-list-item-content>

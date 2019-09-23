@@ -8,8 +8,8 @@
         <!-- image description -->
         <div class="about-content">
           <div>
-            <h2 class="display-1 pl-9">{{ about.title.toUpperCase() }}</h2>
-            <div class="pa-9 pt-12 pb-2 body-1">
+            <h2 class="display-1 pb-12">{{ about.title.toUpperCase() }}</h2>
+            <div class="body-1">
               <p class="proj-content">{{ about.content }}</p>
             </div>
           </div>
@@ -59,8 +59,8 @@ export default {
     background: rgb(13, 56, 86);
     color: white;
     padding-top: 67px;
-    padding-left: 54px;
-    padding-right: 54px;
+    padding-left: 10vw;
+    padding-right: 10vw;
     min-height: 100%;
     float: left;
     width: 56%;
@@ -68,7 +68,6 @@ export default {
     flex-direction: column;
   }  
   .me-img-content {
-    background: rgb(255, 0, 0);
     float: right;
     width: 44%;
     height: 100%;
@@ -90,6 +89,8 @@ export default {
     .about-content {
       min-height: auto;
       width: 100%;
+      padding-left: 90px;
+      padding-right: 90px;
       height: auto;
       float: none;
     }
@@ -98,8 +99,8 @@ export default {
   /* mobile size screens */
   @media only screen and (max-width: 600px) {
     .about-content {
-      padding-left: 12px;
-      padding-right: 12px;
+      padding-left: 48px;
+      padding-right: 48px;
     }
   }
 </style>
