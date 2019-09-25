@@ -31,9 +31,9 @@
         <!-- text info -->
         <div class="contact-content">
           <div>
-            <h2 class="display-1 pl-9">Contact</h2>
-            <div class="pa-9 pt-12 pb-2 body-1">
-              <p class="proj-content">some random text</p>
+            <h2 class="display-1 pb-12">Contact</h2>
+            <div class="body-1">
+              <p class="contact-text-content">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque eum doloribus est quos dolorum. Placeat, molestiae perferendis nulla corporis porro blanditiis pariatur possimus, at debitis dolorem libero magnam mollitia voluptate?</p>
             </div>
           </div>
         </div>
@@ -65,6 +65,13 @@ export default {
 </script>
 
 <style>
+  /* text styling */
+  .contact-text-content {
+    padding-top: 5px;
+    padding-bottom: 38px;
+    white-space: pre-wrap;
+  } 
+
   /* position and color styling */ 
   .email-content {
     float: left;
@@ -75,8 +82,8 @@ export default {
     background: rgb(13, 56, 86);
     color: white;
     padding-top: 67px;
-    padding-left: 54px;
-    padding-right: 54px;
+    padding-left: 10vw;
+    padding-right: 10vw;
     min-height: 100%;
     float: right;
     width: 52%;
@@ -87,8 +94,8 @@ export default {
   /* email form inputs styling */
   #email-form {
     padding-top: 67px;
-    padding-left: 90px;
-    padding-right: 90px;
+    padding-left: 10vw;
+    padding-right: 10vw;
   }
   .send-email {
     background: peru;
@@ -109,7 +116,13 @@ export default {
     .display-content .contact-content {
       order: 1;
     }
+    #email-form {
+      padding-left: 90px;
+      padding-right: 90px;
+    }
     .contact-content {
+      padding-left: 90px;
+      padding-right: 90px;
       min-height: auto;
       width: 100%;
       height: auto;
@@ -120,8 +133,8 @@ export default {
   /* mobile size screens */
   @media only screen and (max-width: 600px) {
     .contact-content {
-      padding-left: 12px;
-      padding-right: 12px;
+      padding-left: 48px;
+      padding-right: 48px;
     }
     #email-form {
       padding-left: 48px;
