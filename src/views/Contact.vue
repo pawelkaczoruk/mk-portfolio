@@ -7,17 +7,19 @@
         
         <!-- email form -->
         <div class="email-content">
-          <v-form id="email-form">
+          <v-form id="email-form" ref="formEmail">
             <!-- email input -->
             <v-text-field 
               type="email"
               label="E-mail"
+              :rules="emailRules"
               filled
               v-model="email.email"
               required></v-text-field>
             <!-- message input -->
             <v-textarea
               filled
+              :rules="messageRules"
               label="Message"
               v-model="email.message"
               required></v-textarea>
@@ -49,18 +51,26 @@ export default {
   data() {
     return {
       email: {
-        name: '',
-        subject: '',
         email: '',
         message: ''
-      }
+      },
+      messageRules: [
+        v => v.length >= 1 || 'Message is required'
+      ],
+      emailRules: [
+        (v) => !!v || 'E-mail is required',
+        (v) => /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+      ],
     }
   },
   methods: {
     sendMail() {
-      
+      if(this.$refs.formEmail.validate()) {
+        console.log('test')
+      }
     }
-  }
+  },
+
 }
 </script>
 
