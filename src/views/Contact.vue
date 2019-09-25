@@ -74,7 +74,7 @@ export default {
     }
   },
   created() {
-    // Loading projects from db  
+    // Loading contact info from db  
     db.collection('contact').onSnapshot(response => {
       const changes = response.docChanges();
       changes.forEach(change => {

@@ -531,6 +531,60 @@
         </div>
       </v-dialog>
 
+      <!-- edit contact section -->
+      <v-dialog 
+        persistent
+        no-click-animation
+        v-model="editContactDialog">
+        <div>
+          <v-card>
+            <v-card-actions>
+              <div class="flex-grow-1"></div>
+              <v-btn
+                small
+                fab
+                text
+                :disabled="loadingEdit"
+                @click="editContactDialog = false"><v-icon>mdi-close</v-icon></v-btn>
+            </v-card-actions>
+            <v-card-text>
+              <!-- form -->
+              <v-container class="form-content">
+                <v-content>
+                  <v-form ref="formContact">
+                    <h2 class="form-title mx-auto display-1">Edytuj informacje kontaktowe</h2>
+                    <v-text-field 
+                      class="form-title"
+                      prepend-icon="mdi-fountain-pen-tip"
+                      filled
+                      label="Tytuł"
+                      v-model="editContact.title"
+                      :rules="inputRules"
+                      required></v-text-field>                        
+                    <v-textarea
+                      class="form-textarea"
+                      prepend-icon="mdi-subtitles-outline"
+                      filled
+                      counter
+                      label="Treść"
+                      v-model="editContact.content"
+                      :rules="inputRules"
+                      required></v-textarea>
+                    <div class="form-submit">
+                      <v-btn 
+                        depressed
+                        color="green lighten-2" 
+                        :loading="loadingEdit"
+                        @click="submitEditContact()">Zapisz</v-btn>
+                    </div>        
+                  </v-form>               
+                </v-content>             
+              </v-container>       
+            </v-card-text>
+          </v-card>
+        </div>
+      </v-dialog>
+
       <!-- edit logo -->
       <v-dialog 
         persistent
@@ -635,6 +689,10 @@ export default {
         imageUrl: '' ,
         image: null
       },
+      editContact: {
+        title: '',
+        content: ''
+      },
       editLogo: { 
         category: '',
         imageUrl: '',
@@ -653,6 +711,7 @@ export default {
       dialog: false,
       edit: false,
       editAboutDialog: false,
+      editContactDialog: false,
       editLogoDialog: false,
       toggle: {
         ilustracje: true,
@@ -674,6 +733,7 @@ export default {
       design: [],
       inne: [],
       about: {},
+      contact: {},
       logo: {},
       order: 0
     }
@@ -1039,6 +1099,11 @@ export default {
       this.editAbout.image = null;
       this.editAboutDialog = true;
     },
+    onContactEdit(item) {
+      this.editContact.title = item.title;
+      this.editContact.content = item.content;
+      this.editContactDialog = true;      
+    },
     onLogoEdit(item) {
       this.editLogo.category = item.category;
       this.editLogo.imageUrl = item.imageUrl;
@@ -1268,6 +1333,21 @@ export default {
             }
           });
         });
+
+        // Loading contact info from db  
+        db.collection('contact').onSnapshot(response => {
+          const changes = response.docChanges();
+          changes.forEach(change => {
+            if(change.type === 'added'){
+              if(change.doc.data().category == 'contact') {
+                this.contact = {
+                  ...change.doc.data(),
+                  dataId: change.doc.id
+                }
+              }
+            }
+          });
+        });        
 
         this.logged = true;
       } else {
