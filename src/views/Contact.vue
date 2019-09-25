@@ -8,26 +8,12 @@
         <!-- email form -->
         <div class="email-content">
           <v-form id="email-form">
-            <!-- name input -->
-            <v-text-field 
-              type="text"
-              label="Name"
-              filled
-              v-model="email.name"
-              required></v-text-field>
             <!-- email input -->
             <v-text-field 
               type="email"
               label="E-mail"
               filled
               v-model="email.email"
-              required></v-text-field>
-            <!-- subject input -->
-            <v-text-field
-              type="text"
-              label="Subject"
-              filled
-              v-model="email.subject"
               required></v-text-field>
             <!-- message input -->
             <v-textarea
@@ -37,7 +23,7 @@
               required></v-textarea>
             <v-btn 
               class="send-email"
-              depressed
+              text
               @click="sendMail()">Send</v-btn>
           </v-form>
         </div>
@@ -81,7 +67,6 @@ export default {
 <style>
   /* position and color styling */ 
   .email-content {
-    background: rgb(255, 0, 0);
     float: left;
     width: 48%;
     height: 100%;
@@ -106,6 +91,7 @@ export default {
     padding-right: 90px;
   }
   .send-email {
+    background: peru;
     float: right;
   }
 
