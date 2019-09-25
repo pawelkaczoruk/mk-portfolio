@@ -2,12 +2,12 @@
   <div class="illustrations fill-height">
 
     <!-- Ilustracje view -->
-    <div class="fill-height" v-if="ilustracje.length > 0">
+    <div class="fill-height">
       <div class="display-content fill-height">
 
         <!-- image description -->
         <div class="text-content">
-          <div>
+          <div v-if="ilustracje.length > 0">
             <h2 class="display-1 pb-12">{{ ilustracje[counter].title.toUpperCase() }}</h2>
             <div class="body-1">
               <p class="proj-content">{{ ilustracje[counter].content }}</p>
@@ -37,7 +37,8 @@
         <!-- images -->
         <div class="img-content">
           <div class="center-img">
-            <v-img 
+            <v-img
+              v-if="ilustracje.length > 0"
               class="sticky py-2 px-3"
               contain 
               max-height="78vh" 
@@ -58,9 +59,7 @@ export default {
   data() {
     return {
       counter: 0,
-      beforeOrdered: [],
       ilustracje: []
-
     }
   },
   methods: {
@@ -77,8 +76,7 @@ export default {
         if(change.type === 'added'){
           if(change.doc.data().category == 'ilustracje') {
             this.ilustracje.push({
-              ...change.doc.data(),
-              dataId: change.doc.id
+              ...change.doc.data()
             });          
           } 
         }

@@ -2,12 +2,12 @@
   <div class="other fill-height">
 
     <!-- Inne view -->
-    <div class="fill-height" v-if="inne.length > 0">
+    <div class="fill-height">
       <div class="display-content fill-height">
 
         <!-- image description -->
         <div class="text-content">
-          <div>
+          <div v-if="inne.length > 0">
             <h2 class="display-1 pb-12">{{ inne[counter].title.toUpperCase() }}</h2>
             <div class="body-1">
               <p class="proj-content">{{ inne[counter].content }}</p>
@@ -38,6 +38,7 @@
         <div class="img-content">
           <div class="center-img" >
             <v-img
+              v-if="inne.length > 0"
               class="sticky py-2 px-3"
               contain 
               max-height="78vh" 
@@ -75,8 +76,7 @@ export default {
         if(change.type === 'added'){
           if(change.doc.data().category == 'inne') {
             this.inne.push({
-              ...change.doc.data(),
-              dataId: change.doc.id
+              ...change.doc.data()
             });          
           } 
         }

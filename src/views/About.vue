@@ -2,12 +2,12 @@
   <div class="about fill-height">
 
     <!-- about view -->
-    <div class="fill-height" v-if="Object.keys(about).length != 0">
+    <div class="fill-height">
       <div class="display-content fill-height">
 
         <!-- image description -->
         <div class="about-content">
-          <div>
+          <div v-if="Object.keys(about).length != 0">
             <h2 class="display-1 pb-12">{{ about.title.toUpperCase() }}</h2>
             <div class="body-1">
               <p class="proj-content">{{ about.content }}</p>
@@ -19,6 +19,7 @@
         <div class="me-img-content">
           <div class="center-img" >
             <v-img
+              v-if="Object.keys(about).length != 0"
               class="sticky py-2 px-3"
               contain 
               max-height="78vh" 
