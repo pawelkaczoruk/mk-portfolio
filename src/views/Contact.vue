@@ -2,7 +2,7 @@
   <div class="contact fill-height">
 
     <!-- contact view -->
-    <div class="fill-height" v-if="true">
+    <div class="fill-height">
       <div class="display-content fill-height">
         
         <!-- email form -->
@@ -32,10 +32,10 @@
 
         <!-- text info -->
         <div class="contact-content">
-          <div>
-            <h2 class="display-1 pb-12">Contact</h2>
+          <div v-if="Object.keys(info).length != 0">
+            <h2 class="display-1 pb-12">{{ info.title }}</h2>
             <div class="body-1">
-              <p class="contact-text-content">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque eum doloribus est quos dolorum. Placeat, molestiae perferendis nulla corporis porro blanditiis pariatur possimus, at debitis dolorem libero magnam mollitia voluptate?</p>
+              <p class="contact-text-content">{{ info.content }}</p>
             </div>
           </div>
         </div>
@@ -47,9 +47,12 @@
 </template>
 
 <script>
+import { db } from '@/fb'
+
 export default {
   data() {
     return {
+      info: {},
       email: {
         email: '',
         message: ''
@@ -70,7 +73,19 @@ export default {
       }
     }
   },
-
+  created() {
+    // Loading projects from db  
+    db.collection('contact').onSnapshot(response => {
+      const changes = response.docChanges();
+      changes.forEach(change => {
+        if(change.type === 'added'){
+          if(change.doc.data().category == 'contact') {
+            this.info = change.doc.data();
+          }
+        }
+      });
+    });
+  }
 }
 </script>
 
