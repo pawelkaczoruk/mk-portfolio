@@ -190,6 +190,35 @@
         </v-container>
       </v-content>
 
+      <!-- contact -->
+      <v-content v-if="toggle.contact">
+        <v-container>
+          <div class="d-flex justify-space-around flex-wrap">
+              <v-card 
+                class="display-card my-4 mx-2" 
+                height="240px" 
+                width="369px"
+                tile>
+                <v-img 
+                  elevation="3" 
+                  class="display-img" 
+                  :src="contactImg">
+                  <v-card-title class="justify-space-between">
+                    <v-btn
+                      depressed
+                      class="edit-btn" 
+                      x-small 
+                      fab
+                      @click="onContactEdit(contact)">
+                      <v-icon>mdi-pencil-outline</v-icon>
+                    </v-btn>
+                  </v-card-title>
+                </v-img>
+              </v-card>
+          </div>       
+        </v-container>
+      </v-content>
+
       <!-- logo -->
       <v-content v-if="toggle.logo">
         <v-container>
@@ -573,6 +602,7 @@ import { db, st, auth } from '@/fb'
 export default {
   data() {
     return {
+      contactImg: require('@/assets/contact.png'),
       logged: false,
       login: {
         email: '',
@@ -629,6 +659,7 @@ export default {
         design: false,
         inne: false,
         about: false,
+        contact: false,
         logo: false
       },
       navigation: [
@@ -636,6 +667,7 @@ export default {
         { name: 'design', path: 'design' },
         { name: 'inne', path: 'inne' },
         { name: 'o mnie', path: 'about' },
+        { name: 'kontakt', path: 'contact' },
         { name: 'logo', path: 'logo' }
       ],
       ilustracje: [],
