@@ -534,6 +534,7 @@
       <!-- edit contact section -->
       <v-dialog 
         persistent
+        width="60%"
         no-click-animation
         v-model="editContactDialog">
         <div>
@@ -1070,6 +1071,30 @@ export default {
         this.about.image = this.editAbout.image;
       }
     },
+    submitEditContact() {
+      if(this.$refs.formContact.validate()) {
+
+        this.loadingEdit = true;
+
+        const newContact = {
+          title: this.editContact.title,
+          content: this.editContact.content
+        }
+
+        // update data on db
+        db.collection('contact').doc(this.contact.dataId).update(newContact).then(() => {
+          this.loadingEdit = false;
+          this.editContactDialog = false;
+        }).catch(() => {
+          this.loadingEdit = false;
+          this.editContactDialog = false;
+          return alert('Coś poszło nie tak - błąd aktualizacji treści w bazie');
+        });
+  
+        this.contact.title = this.editContact.title;
+        this.contact.content = this.editContact.content;
+      }
+    },    
     onLogin() {
       // validate
       if(this.$refs.login.validate()) {
