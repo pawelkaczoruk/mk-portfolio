@@ -1,7 +1,9 @@
 <template>
-  <div class="fill-height">
+  <div id="home" class="fill-height">
+    
     <!-- background -->
     <div class="home-background"></div>
+
 
     <!-- navigation cards -->
     <div class="nav-container fill-height">

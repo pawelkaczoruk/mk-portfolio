@@ -87,6 +87,9 @@ export default {
 </script>
 
 <style> 
+html {
+  scroll-behavior: smooth;
+}
   .v-content{
     display: flex;
     height: 100%;

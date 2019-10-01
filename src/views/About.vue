@@ -1,33 +1,33 @@
 <template>
   <div class="about fill-height">
 
+    <div class="about-background"></div>
+
     <!-- about view -->
-    <div class="fill-height">
-      <div class="display-content fill-height">
+    <div class="display-content fill-height">
 
-        <!-- image description -->
-        <div class="about-content">
-          <div v-if="Object.keys(about).length != 0">
-            <h2 class="display-1 pb-12">{{ about.title.toUpperCase() }}</h2>
-            <div class="body-1">
-              <p class="proj-content">{{ about.content }}</p>
-            </div>
+      <!-- image description -->
+      <div class="about-content">
+        <div v-if="Object.keys(about).length != 0">
+          <h2 class="display-1 pb-12">{{ about.title.toUpperCase() }}</h2>
+          <div class="body-1">
+            <p class="proj-content">{{ about.content }}</p>
           </div>
         </div>
-
-        <!-- images -->
-        <div class="me-img-content">
-          <div class="center-img" >
-            <v-img
-              v-if="Object.keys(about).length != 0"
-              class="sticky py-2 px-3"
-              contain 
-              max-height="78vh" 
-              :src="about.imageUrl"></v-img>
-          </div>
-        </div>
-
       </div>
+
+      <!-- images -->
+      <div class="me-img-content">
+        <div class="center-img" >
+          <v-img
+            v-if="Object.keys(about).length != 0"
+            class="sticky py-2 px-3"
+            contain 
+            max-height="78vh" 
+            :src="about.imageUrl"></v-img>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -55,9 +55,19 @@ export default {
 }
 </script>
 <style>
+  /* background */
+  .about-background {
+    position: absolute;
+    width: 56%;
+    height: 100%;
+    z-index: 0;
+    background: rgb(13, 56, 86);
+  }
+  .display-content {
+    position: relative;
+  }
   /* text and img styling */
   .about-content {
-    background: rgb(13, 56, 86);
     color: white;
     padding-top: 67px;
     padding-left: 10vw;
@@ -67,7 +77,7 @@ export default {
     width: 56%;
     display: flex;
     flex-direction: column;
-  }  
+  }
   .me-img-content {
     float: right;
     width: 44%;
@@ -76,7 +86,11 @@ export default {
 
   /* smaller size screens */
   @media only screen and (max-width: 960px) {
+    .about-background {
+      width: 100%;
+    }
     .me-img-content {
+      background: white;
       width: 100%;
       height: auto;
       float: none;
