@@ -1,6 +1,7 @@
 <template>
-  <v-app class="grey lighten-4">
+  <v-app>
     <navbar />
+
     <v-content>
       <router-view></router-view>
     </v-content>
@@ -17,10 +18,15 @@ export default {
   },
   name: 'App',
   data() {
-    return {}
+    return {
+    }
   }
 };
 </script>
 <style>
-
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 </style>
