@@ -12,12 +12,14 @@
         @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <!-- website logo -->
-      <a class="position-logo" href="/"><v-toolbar-title class="text-uppercase nav-logo">
-        <v-img
-          height="40px" 
-          width="150px"
-          :src="logo.imageUrl"></v-img>
-      </v-toolbar-title></a>
+      <v-toolbar-title class="nav-logo pa-0">
+        <a class="position-logo" href="/">
+          <v-img
+            height="40px" 
+            width="150px"
+            :src="logo.imageUrl"></v-img>
+        </a>
+      </v-toolbar-title>
       <div class="fill-space"></div>
 
       <!-- nav buttons -->
@@ -479,7 +481,7 @@ export default {
   .v-btn::before {
     background: transparent !important;
   }
-  
+
   /* styling list */
   .v-list-item--active {
     font-weight: 500;
