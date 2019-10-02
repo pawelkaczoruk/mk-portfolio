@@ -145,8 +145,7 @@ export default {
     const options = document.querySelectorAll(".bar-white .option");
     let current = 1;
     options.forEach((option, i) => (option.index = i + 1));
-    options.forEach(option =>
-                    option.addEventListener("click", function() {
+    options.forEach(option => option.addEventListener("click", function() {
       barOuter.className = "bar-outer";
       barOuter.classList.add(`pos${option.index}`);
       if (option.index > current) {
@@ -167,24 +166,41 @@ export default {
   }
   .bar-blue {
     background: rgb(177, 223, 255); 
-    clip-path: polygon(
+    -webkit-clip-path: polygon(
+      435px 44px,
+      435px 0,
       23px 0,
       19.2897px 0.588px,
       15.9463px 2.292px,
       13.292px 4.9463px,
       11.588px 8.2807px,
       11px 12px,
-
       11px 32px,
       11.588px 35.7103px,
       13.292px 39.0537px,
       15.9463px 41.708px,
       19.2897px 43.412px,
-      23px 44px,
-
-      435px 44px,
-      435px 0
+      23px 44px
     );
+    clip-path: polygon(
+      435px 44px,
+      435px 0,
+      23px 0,
+      19.2897px 0.588px,
+      15.9463px 2.292px,
+      13.292px 4.9463px,
+      11.588px 8.2807px,
+      11px 12px,
+      11px 32px,
+      11.588px 35.7103px,
+      13.292px 39.0537px,
+      15.9463px 41.708px,
+      19.2897px 43.412px,
+      23px 44px
+    );
+    -o-transition: clip-path 770ms cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: clip-path 770ms cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: clip-path 770ms cubic-bezier(0.4, 0, 0.2, 1);
     transition: clip-path 770ms cubic-bezier(0.4, 0, 0.2, 1);
   }
   .bar-outer { 
@@ -192,7 +208,7 @@ export default {
     height: 44px;
     right: 0;
     margin-right: 16px;
-    clip-path: polygon(
+    -webkit-clip-path: polygon(
       0 0,
       135px 0, 
       135px 44px, 
@@ -200,15 +216,35 @@ export default {
     );
     clip-path: polygon(
       0 0,
+      135px 0, 
+      135px 44px, 
+      0 44px
+    );
+    -webkit-clip-path: polygon(
+      0 0,
       0 44px,
-      
       123px 44px,
       126.7103px 43.412px,
       130.0537px 41.708px,
       132.708px 39.0537px,
       134.412px 35.7103px,
       135px 32px,
-
+      135px 12px,
+      134.412px 8.2807px,
+      132.708px 4.9463px,
+      130.0537px 2.292px,
+      126.7103px 0.588px,
+      123px 0 
+    );
+    clip-path: polygon(
+      0 0,
+      0 44px,
+      123px 44px,
+      126.7103px 43.412px,
+      130.0537px 41.708px,
+      132.708px 39.0537px,
+      134.412px 35.7103px,
+      135px 32px,
       135px 12px,
       134.412px 8.2807px,
       132.708px 4.9463px,
@@ -216,20 +252,37 @@ export default {
       126.7103px 0.588px,
       123px 0 
     ); 
+    -o-transition: clip-path 770ms cubic-bezier(0.4, 0, 0.2, 1); 
+    -moz-transition: clip-path 770ms cubic-bezier(0.4, 0, 0.2, 1); 
+    -webkit-transition: clip-path 770ms cubic-bezier(0.4, 0, 0.2, 1); 
     transition: clip-path 770ms cubic-bezier(0.4, 0, 0.2, 1); 
   }
   .bar-outer.pos2 .bar-blue {
-    clip-path: polygon(
+    -webkit-clip-path: polygon(
       435px 44px,
       435px 0,
-
       168px 0,
       164.2897px 0.588px,
       159.9463px 2.292px,
       158.292px 4.9463px,
       156.588px 8.2807px,
       156px 12px,
-
+      156px 32px,
+      156.588px 35.7103px,
+      158.292px 39.0537px,
+      159.9463px 41.708px,
+      164.2897px 43.412px,
+      168px 44px
+    );
+    clip-path: polygon(
+      435px 44px,
+      435px 0,
+      168px 0,
+      164.2897px 0.588px,
+      159.9463px 2.292px,
+      158.292px 4.9463px,
+      156.588px 8.2807px,
+      156px 12px,
       156px 32px,
       156.588px 35.7103px,
       158.292px 39.0537px,
@@ -239,17 +292,31 @@ export default {
     );
   }
   .bar-outer.pos2 {
-    clip-path: polygon(
+    -webkit-clip-path: polygon(
       0 0,
       0 44px,
-
       268px 44px,
       271.7103px 43.412px,
       275.0537px 41.708px,
       277.708px 39.0537px,
       279.412px 35.7103px,
       280px 32px,
-
+      280px 12px,
+      279.412px 8.2807px,
+      277.708px 4.9463px,
+      275.0537px 2.292px,
+      271.7103px 0.588px,
+      268px 0
+    );
+    clip-path: polygon(
+      0 0,
+      0 44px,
+      268px 44px,
+      271.7103px 43.412px,
+      275.0537px 41.708px,
+      277.708px 39.0537px,
+      279.412px 35.7103px,
+      280px 32px,
       280px 12px,
       279.412px 8.2807px,
       277.708px 4.9463px,
@@ -259,17 +326,31 @@ export default {
     );
   }
   .bar-outer.pos3 .bar-blue {
-    clip-path: polygon(
+    -webkit-clip-path: polygon(
       435px 44px,
       435px 0,
-
       313px 0,
       309.2897px 0.588px,
       305.9463px 2.292px,
       303.292px 4.9463px,
       301.588px 8.2807px,
       301px 12px,
-
+      301px 32px,
+      301.588px 35.7103px,
+      303.292px 39.0537px,
+      305.9463px 41.708px,
+      309.2897px 43.412px,
+      313px 44px
+    );
+    clip-path: polygon(
+      435px 44px,
+      435px 0,
+      313px 0,
+      309.2897px 0.588px,
+      305.9463px 2.292px,
+      303.292px 4.9463px,
+      301.588px 8.2807px,
+      301px 12px,
       301px 32px,
       301.588px 35.7103px,
       303.292px 39.0537px,
@@ -279,23 +360,43 @@ export default {
     );
   }
   .bar-outer.pos3 {
-    clip-path: polygon(
+    -webkit-clip-path: polygon(
       0 0, 
       435px 0, 
       435px 44px, 
       0 44px
     );
     clip-path: polygon(
+      0 0, 
+      435px 0, 
+      435px 44px, 
+      0 44px
+    );
+    -webkit-clip-path: polygon(
       0 0,
       0 44px,
-
       414px 44px,
       418.7103px 43.412px,
       421.0537px 41.708px,
       423.708px 39.0537px,
       425.412px 35.7103px,
       426px 32px,
-
+      426px 12px,
+      425.412px 8.2807px,
+      423.708px 4.9463px,
+      421.0537px 2.292px,
+      418.7103px 0.588px,
+      414px 0
+    );
+    clip-path: polygon(
+      0 0,
+      0 44px,
+      414px 44px,
+      418.7103px 43.412px,
+      421.0537px 41.708px,
+      423.708px 39.0537px,
+      425.412px 35.7103px,
+      426px 32px,
       426px 12px,
       425.412px 8.2807px,
       423.708px 4.9463px,
@@ -305,27 +406,43 @@ export default {
     );
   }
   .bar-outer.left .bar-blue {
-    transition-delay: 0;
+    -o-transition-delay: 50ms;
+    -moz-transition-delay: 50ms;
+    -webkit-transition-delay: 50ms;
+    transition-delay: 50ms;
   }
   .bar-outer.left {
+    -o-transition-delay: 50ms;
+    -moz-transition-delay: 50ms;
+    -webkit-transition-delay: 50ms;
     transition-delay: 50ms;
   }
   .bar-outer.right .bar-blue {
+    -o-transition-delay: 50ms;
+    -moz-transition-delay: 50ms;
+    -webkit-transition-delay: 50ms;
     transition-delay: 50ms;
   }
   .bar-outer.right {
-    transition-delay: 0;
+    -o-transition-delay: 50ms;
+    -moz-transition-delay: 50ms;
+    -webkit-transition-delay: 50ms;
+    transition-delay: 50ms;
   }
 
-
+  /* layout for navbar items */
   .fill-space {
+    -webkit-flex-grow: 1;
     flex-grow: 1;
   }
   .nav-logo {
     margin-left: 9vw;
   }
+
+  /* small screens */
   @media only screen and (max-width: 960px) {
     .fill-space {
+      -webkit-flex-grow: 0;
       flex-grow: 0;
     }
     .position-logo {
@@ -344,6 +461,8 @@ export default {
     background: transparent;
   }
   .navbar-btns .v-btn--active {
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
     border-radius: 12px;
   }
   .navbar-btns .v-btn__content{
@@ -352,12 +471,15 @@ export default {
   .navbar-btns {
     margin-right: 8vw;
   }
+
+  /* override vuetify button background color */
   .v-btn-content {
     background: transparent !important;
   }
   .v-btn::before {
     background: transparent !important;
   }
+  
   /* styling list */
   .v-list-item--active {
     font-weight: 500;
