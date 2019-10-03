@@ -45,6 +45,14 @@
                 class="nav-btn mx-2"
                 :class="[toggle[el.path] ? 'active' : '']">{{ el.name }}</v-btn>
             </div>
+              <v-btn 
+                @click="onLogout()"
+                height="100%" 
+                tile
+                text 
+                class="nav-btn mx-2 red--text text--darken-4">
+                <v-icon>mdi-logout</v-icon>
+              </v-btn>            
           </v-toolbar-items> 
         </v-toolbar>
       </nav>
@@ -1256,7 +1264,15 @@ export default {
       if(this.post.category.toLowerCase() == 'inne'){
         this.post.order = this.inne.length + 1;
       }
-    }
+    },
+    onLogout() {
+      /* logout from admin panel */
+      auth.signOut().then(() => {
+        this.logged = false;
+      }).catch(() => {
+        return alert('Błąd przy wylogowywaniu');
+      });
+    },
   },
   created() {
     // check if admin is logged in
@@ -1267,6 +1283,7 @@ export default {
         this.inne = [];
         this.logo = {};
         this.about = {};
+        this.contact = {};
         // getting projects from db
         db.collection('projekty').orderBy('order').onSnapshot(response => {
           const changes = response.docChanges();
@@ -1381,6 +1398,7 @@ export default {
         this.inne = [];
         this.logo = {};
         this.about = {};
+        this.contact = {};
         
         this.logged = false;
       }
