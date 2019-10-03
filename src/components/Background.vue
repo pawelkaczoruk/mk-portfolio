@@ -76,6 +76,7 @@ export default {
 }
 </script>
 <style>
+  /* transitions of background for different pages */
   .rect-color {
     background: rgb(13, 56, 86);
     height: 100%;
@@ -115,5 +116,12 @@ export default {
   }
   .rect-outer.rect-manage .rect-color {
     background: transparent;
+  }
+
+  /* on smaller screens */
+  @media only screen and (max-width: 960px) {
+    .rect-color {
+      background: transparent;
+    }
   }
 </style>
