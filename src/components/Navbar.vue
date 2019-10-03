@@ -142,18 +142,36 @@ export default {
     });
   },
   mounted() {
-    /* adding right class to animate nav buttons */
-    const barOuter = document.querySelector(".bar-outer");
-    const options = document.querySelectorAll(".bar-white .option");
+    /* select elements that are needed for transition */
+    const barOuter = document.querySelector('.bar-outer');
+    const options = document.querySelectorAll('.bar-white .option');
+    const active = document.querySelector('.bar-white .v-btn--active');
     let current = 1;
+
+    /* get current active element */
+    options.forEach((option, i) => {
+      if(option == active) { 
+        current = i + 1;
+      }
+    });
+
+    /* add matching class if route is different than homepage */
+    barOuter.className = 'bar-outer';
+    if(current == 2) {
+      barOuter.classList.add('pos2');
+    } else if(current == 3) {
+      barOuter.classList.add('pos3');
+    }
+
+    /* add matching class when nav button is clicked */
     options.forEach((option, i) => (option.index = i + 1));
-    options.forEach(option => option.addEventListener("click", function() {
-      barOuter.className = "bar-outer";
+    options.forEach(option => option.addEventListener('click', () => {
+      barOuter.className = 'bar-outer';
       barOuter.classList.add(`pos${option.index}`);
-      if (option.index > current) {
-        barOuter.classList.add("right");
-      } else if (option.index < current) {
-        barOuter.classList.add("left");
+      if(option.index > current) {
+        barOuter.classList.add('right');
+      } else if(option.index < current) {
+        barOuter.classList.add('left');
       }
       current = option.index;
     }));
