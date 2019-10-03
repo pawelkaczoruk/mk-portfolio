@@ -103,7 +103,7 @@ html {
 
   /* content image and text styling */ 
   .text-content {
-    background: rgb(13, 56, 86);
+    /*background: rgb(13, 56, 86);*/
     color: white;
     padding-top: 67px;
     padding-left: 10vw;

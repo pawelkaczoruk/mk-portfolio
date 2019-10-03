@@ -7,12 +7,10 @@
 export default {
   data() {
     return {
-      routes: [],
       currentRoute: {}
     }
   },
   created() {
-    this.routes = this.$router.options.routes;
     this.currentRoute = this.$router.currentRoute
   },
   watch: {
@@ -25,20 +23,26 @@ export default {
     /* select transitioned element */
     const rectOuter = document.querySelector('.rect-outer');
 
-    /* get routes */
-    const options = []; 
-    this.routes.forEach((route, i) => {
-      options[i] = route.name;
-    });
     /* get active route */
     const active = this.currentRoute.name;
 
     /* add matching class if route is different than homepage */
     rectOuter.className = 'rect-outer';
-    if(active == 'about') {
-      rectOuter.classList.add('rect-about');
-    } else if(active == 'contact') {
-      rectOuter.classList.add('rect-contact');
+    switch(active) {
+      case 'about':
+        rectOuter.classList.add('rect-about');
+        break;
+      case 'contact':
+        rectOuter.classList.add('rect-contact');
+        break;
+      case 'illustrations':
+      case 'design':
+      case 'other':
+        rectOuter.classList.add('rect-projects');
+        break;
+      case 'manage':
+        rectOuter.classList.add('rect-manage');
+        break;     
     }
   },
   methods: {
@@ -46,11 +50,6 @@ export default {
       /* select transitioned element */
       const rectOuter = document.querySelector('.rect-outer');
 
-      /* get routes */
-      const options = []; 
-      this.routes.forEach((route, i) => {
-        options[i] = route.name;
-      });
       /* get active route */
       const active = this.currentRoute.name;
 
@@ -63,6 +62,14 @@ export default {
         case 'contact':
           rectOuter.classList.add('rect-contact');
           break;
+        case 'illustrations':
+        case 'design':
+        case 'other':
+          rectOuter.classList.add('rect-projects');
+          break;
+        case 'manage':
+          rectOuter.classList.add('rect-manage');
+          break;
       }
     }
   },
@@ -70,7 +77,7 @@ export default {
 </script>
 <style>
   .rect-color {
-    background: red;
+    background: rgb(13, 56, 86);
     height: 100%;
     width: 100%;
     transition: transform 770ms cubic-bezier(0.4, 0, 0.2, 1) 50ms,
@@ -98,5 +105,15 @@ export default {
   }
   .rect-outer.rect-contact {
     width: 52%;
+  }
+  .rect-outer.rect-projects .rect-color {
+    width: 100%;
+    transform: translateX(-44vw);
+  }
+  .rect-outer.rect-projects {
+    width: 44%;
+  }
+  .rect-outer.rect-manage .rect-color {
+    background: transparent;
   }
 </style>
