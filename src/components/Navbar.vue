@@ -13,7 +13,7 @@
 
       <!-- website logo -->
       <v-toolbar-title class="nav-logo pa-0">
-        <a class="position-logo" href="/">
+        <a href="/">
           <v-img
             height="40px" 
             width="150px"
@@ -447,12 +447,9 @@ export default {
       -webkit-flex-grow: 0;
       flex-grow: 0;
     }
-    .position-logo {
+    .nav-logo {
       margin-left: auto;
       margin-right: auto;
-    }
-    .nav-logo {
-      margin-left: 0;
     }
   }
 
