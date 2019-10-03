@@ -56,12 +56,12 @@ export default {
 </script>
 <style>
   /* background */
-  .about-background {
+  .about-background {/*
     position: absolute;
     width: 56%;
     height: 100%;
     z-index: 0;
-    background: rgb(13, 56, 86);
+    background: rgb(13, 56, 86); */
   }
   .display-content {
     position: relative;

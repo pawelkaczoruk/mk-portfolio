@@ -51,12 +51,14 @@ export default {
 <style>
   /* background for home view */
   .home-background {
+    
+    /*
     position: absolute;
     right: 0;
     z-index: 0;
     height: 100%;
     width: 56%;
-    background:rgb(13, 56, 86);
+    background:rgb(13, 56, 86); */
   }
 
   /* positioning and styles for navigation cards */
