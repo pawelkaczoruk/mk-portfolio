@@ -1,9 +1,5 @@
 <template>
   <div id="home" class="fill-height">
-    
-    <!-- background -->
-    <div class="home-background"></div>
-
 
     <!-- navigation cards -->
     <div class="nav-container fill-height">
@@ -49,16 +45,6 @@ export default {
 }
 </script>
 <style>
-  /* background for home view */
-  .home-background {
-    position: absolute;
-    right: 0;
-    z-index: 0;
-    height: 100%;
-    width: 56%;
-    background:rgb(13, 56, 86);
-  }
-
   /* positioning and styles for navigation cards */
   .single-card {
     display: inline-block;
@@ -85,8 +71,8 @@ export default {
 
   /* smaller screens */
   @media only screen and (max-width: 960px) {
-    .home-background {
-      width: 100%;
+    #home {
+      background: rgb(13, 56, 86);
     }
     .nav-container {
       display: inline;

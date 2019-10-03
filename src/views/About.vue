@@ -1,8 +1,6 @@
 <template>
   <div class="about fill-height">
 
-    <div class="about-background"></div>
-
     <!-- about view -->
     <div class="display-content fill-height">
 
@@ -55,17 +53,6 @@ export default {
 }
 </script>
 <style>
-  /* background */
-  .about-background {
-    position: absolute;
-    width: 56%;
-    height: 100%;
-    z-index: 0;
-    background: rgb(13, 56, 86);
-  }
-  .display-content {
-    position: relative;
-  }
   /* text and img styling */
   .about-content {
     color: white;
@@ -86,9 +73,6 @@ export default {
 
   /* smaller size screens */
   @media only screen and (max-width: 960px) {
-    .about-background {
-      width: 100%;
-    }
     .me-img-content {
       background: white;
       width: 100%;
@@ -102,6 +86,7 @@ export default {
       order: 2;
     }
     .about-content {
+      background: rgb(13, 56, 86);
       min-height: auto;
       width: 100%;
       padding-left: 90px;

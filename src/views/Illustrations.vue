@@ -87,9 +87,9 @@ export default {
 </script>
 
 <style> 
-html {
-  scroll-behavior: smooth;
-}
+  * {
+    scroll-behavior: smooth;
+  }
   .v-content{
     display: flex;
     height: 100%;
@@ -103,7 +103,6 @@ html {
 
   /* content image and text styling */ 
   .text-content {
-    background: rgb(13, 56, 86);
     color: white;
     padding-top: 67px;
     padding-left: 10vw;
@@ -132,7 +131,6 @@ html {
 
   /* sticky image on page */ 
   .sticky {
-    position: -webkit-sticky; /* Safari */ 
     position: sticky;
     top: 20vh;
   }
@@ -162,6 +160,7 @@ html {
       order: 2;
     }
     .text-content {
+      background: rgb(13, 56, 86);
       min-height: auto;
       width: 100%;
       padding-left: 90px;
