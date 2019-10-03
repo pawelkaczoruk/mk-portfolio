@@ -103,8 +103,8 @@ export default {
     width: 48%;
     height: 100%;
   }
-  .contact-content {
-    background: rgb(13, 56, 86);
+  .contact-content {/*
+    background: rgb(13, 56, 86);*/
     color: white;
     padding-top: 67px;
     padding-left: 10vw;
