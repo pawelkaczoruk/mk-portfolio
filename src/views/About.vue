@@ -7,10 +7,8 @@
       <!-- image description -->
       <div class="about-content">
         <div v-if="Object.keys(about).length != 0">
-          <h2 class="display-1 pb-12">{{ about.title.toUpperCase() }}</h2>
-          <div class="body-1">
-            <p class="proj-content">{{ about.content }}</p>
-          </div>
+          <h2 class="pb-12">{{ about.title.toUpperCase() }}</h2>
+          <p class="proj-content">{{ about.content }}</p>
         </div>
       </div>
 

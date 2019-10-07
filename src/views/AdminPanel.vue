@@ -27,8 +27,9 @@
           required></v-text-field>
       </v-form>
       <v-btn
+        text
         @click="onLogin()"
-        class="indigo lighten-3">Zaloguj</v-btn>
+        class="login-btn">Zaloguj</v-btn>
     </div>
 
     <div v-if="logged">
@@ -1408,7 +1409,31 @@ export default {
 </script>
 
 <style>
+  /* text */
+  .v-text-field__slot input,
+  .v-text-field__slot textarea,
+  .v-list-item__title,
+  .v-select__selection,
+  .v-file-input__text {
+    font-size: 1.14rem;
+    font-weight: 400;
+    letter-spacing: 0.0079em;
+  }
+  .v-messages__message {
+    font-size: 1.02rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+  .login-btn .v-btn__content {
+    font-size: 1.11rem;
+    font-weight: 500;
+    letter-spacing: 0.031em;
+  }
   /* add new post and edit - form styling */
+  .v-text-field__slot input {
+    padding: 0;
+    height: 56px;
+  }
   .v-card__text {
     padding-top: 0;
     margin-top: -41px;
@@ -1430,11 +1455,11 @@ export default {
   .form-submit {
     text-align: right;
   }
-  .form-content {
+  .v-card__text .form-content {
     padding-left: 60px;
     padding-right: 60px;
   }
-  p.title, .form-title {
+  p.title {
     text-align: center;
   }  
 
@@ -1447,7 +1472,10 @@ export default {
     height: 100%;
   }
 
-  /* edit and remove buttons styles */
+  /* login, edit and remove buttons styles */
+  .login-btn {
+    background: peru;
+  }
   .edit-btn {
     border: 2px solid rgba(14, 79, 165, 0.65);
   }
@@ -1466,6 +1494,12 @@ export default {
   }
 
   /* navigation styling */
+  .nav-btn .v-btn__content{
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    line-height: 1.6rem;
+  }  
   #section-nav {
     border-top: 2px solid rgb(82, 79, 79);
     border-bottom: 2px solid rgb(82, 79, 79);

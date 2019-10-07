@@ -353,7 +353,10 @@ export default {
     border-radius: 12px;
   }
   .navbar-btns .v-btn__content{
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.051em;
+    line-height: 1.5rem;
   }  
   .navbar-btns {
     margin-right: 8vw;
@@ -368,8 +371,16 @@ export default {
   }
 
   /* styling list */
+  .v-list-item__content{
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0.061em;
+    line-height: 1.2rem;
+  }
   .v-list-item--active {
-    font-weight: 500;
     background: rgb(177, 223, 255);
+  }
+  .v-list-item--active .v-list-item__content {
+    font-weight: 500;
   }
 </style>

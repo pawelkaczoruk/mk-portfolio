@@ -33,10 +33,8 @@
         <!-- text info -->
         <div class="contact-content">
           <div v-if="Object.keys(info).length != 0">
-            <h2 class="display-1 pb-12">{{ info.title }}</h2>
-            <div class="body-1">
-              <p class="contact-text-content">{{ info.content }}</p>
-            </div>
+            <h2 class="pb-12">{{ info.title }}</h2>
+            <p class="contact-text-content">{{ info.content }}</p>
           </div>
         </div>
 
@@ -124,6 +122,11 @@ export default {
   .send-email {
     background: peru;
     float: right;
+  }
+  .send-email .v-btn__content {
+    font-size: 1.11rem;
+    font-weight: 500;
+    letter-spacing: 0.031em;
   }
 
   /* smaller size screens */

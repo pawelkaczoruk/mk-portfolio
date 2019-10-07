@@ -8,10 +8,8 @@
         <!-- image description -->
         <div class="text-content">
           <div v-if="design.length > 0">
-            <h2 class="display-1 pb-12">{{ design[counter].title.toUpperCase() }}</h2>
-            <div class="body-1">
-              <p class="proj-content">{{ design[counter].content }}</p>
-            </div>
+            <h2 class="pb-12">{{ design[counter].title.toUpperCase() }}</h2>
+            <p class="proj-content">{{ design[counter].content }}</p>
           </div>
 
           <!-- navigation buttons -->
