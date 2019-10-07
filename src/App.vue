@@ -3,7 +3,9 @@
     <navbar />
     <background />
     <v-content>
-      <router-view></router-view>
+      <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </v-content>
 
   </v-app>
@@ -42,4 +44,12 @@ export default {
     line-height: 2.8rem;
     letter-spacing: 0.031em;
   }
+
+  /* transition fade */
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 550ms ease 50ms;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }  
 </style>
